@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fix the C Code - 3D Quiz</title>
+     <style>
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+        }
+        .quiz-container {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            box-shadow: 0 0 30px cyan;
+            width: 600px;
+            text-align: center;
+            padding: 20px;
+            transform: perspective(1000px) rotateY(0deg);
+            transition: transform 0.5s;
+        }
+        .quiz-container:hover {
+            transform: perspective(1000px) rotateY(5deg);
+        }
+        h2 {
+            color: cyan;
+        }
+        pre {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px;
+            border-radius: 10px;
+            color: white;
+            font-size: 16px;
+        }
+        textarea {
+            width: 90%;
+            height: 150px;
+            font-size: 16px;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 1px solid cyan;
+            border-radius: 10px;
+            outline: none;
+        }
+        button {
+            background: linear-gradient(90deg, #ff00ff, #00ffff);
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1.1rem;
+            margin-top: 15px;
+            transition: transform 0.2s, box-shadow 0.3s;
+        }
+        button:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 20px cyan;
+        }
+        .message {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+            color: lime;
+        }
+        #next-level {
+    display: none;
+    margin-top: 20px;
+    padding: 12px 24px;
+    font-size: 1.2rem;
+    text-align: center;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+        
+    </style>
+
+    </head>
+<body>
+    <div class="quiz-container" id="quiz">
+        <h2>Correct the C Code:</h2>
+        <pre id="pseudo-code"></pre>
+        <textarea id="user-input" placeholder="Type the correct code here..."></textarea>
+        <button id="submit">Submit</button>
+        <div class="message" id="message"></div>
+        <button id="next-level" onclick="nextLevel()">Next Level</button>
+        <audio id="success-sound" src="victory.mp3"></audio>
+        <audio id="fail-sound" src="wrong.mp3"></audio>
+    </div>
+
+    <script>
+        const quizData = [
+            { pseudo: "#include<stdio.h>\nvoid main() {\n  print(\"Hello World!\");\n}", correct: "#include<stdio.h>\nvoid main() {\n  printf(\"Hello World!\");\n}" },
+            { pseudo: "int main() {\n  int a = 5\n  printf(\"%d\", a);\n  return 0;\n}", correct: "int main() {\n  int a = 5;\n  printf(\"%d\", a);\n  return 0;\n}" },
+            { pseudo: "#include<stdio.h>\nint main() {\n  char name[] = \"John\";\n  printf(\"Hello %s\", name);\n}", correct: "#include<stdio.h>\nint main() {\n  char name[] = \"John\";\n  printf(\"Hello %s\", name);\n  return 0;\n}" }
+        ];
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        let selectedQuestions = shuffleArray([...quizData]).slice(0, 2);
+        let currentQuiz = 0;
+        const pseudoCodeEl = document.getElementById("pseudo-code");
+        const userInput = document.getElementById("user-input");
+        const submitBtn = document.getElementById("submit");
+        const messageEl = document.getElementById("message");
+        const nextLevelBtn = document.getElementById("next-level");
+        const successSound = document.getElementById("success-sound");
+        const failSound = document.getElementById("fail-sound");
+
+        function loadQuiz() {
+            pseudoCodeEl.innerText = selectedQuestions[currentQuiz].pseudo;
+            userInput.value = "";
+            messageEl.innerText = "";
+            nextLevelBtn.style.display = "none";
+        }
+
+        submitBtn.addEventListener("click", () => {
+            const userAnswer = userInput.value.trim();
+            if (userAnswer === selectedQuestions[currentQuiz].correct) {
+                messageEl.innerText = "✅ Correct!";
+                successSound.play();
+                submitBtn.innerText = "Next";
+                submitBtn.onclick = nextQuestion;
+            } else {
+                messageEl.innerText = "❌ Incorrect! Try again.";
+                messageEl.style.color = "red";
+                failSound.play();
+            }
+        });
+
+        function nextQuestion() {
+            currentQuiz++;
+            if (currentQuiz < selectedQuestions.length) {
+                submitBtn.innerText = "Submit";
+                submitBtn.onclick = submitBtn.click;
+                loadQuiz();
+            } else {
+                messageEl.innerHTML = "🎉 Quiz Completed!";
+                submitBtn.style.display = "none";
+                nextLevelBtn.style.display = "block";
+            }
+        }
+
+        function nextLevel() {
+            window.location.href = "level3.html"; // Change to your actual next level file
+        }
+
+        loadQuiz();
+    </script>
+</body>
+</html>

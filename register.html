@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Page</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="register-container">
+        <div class="register-box">
+            <h2>Register</h2>
+            <form id="registerForm">
+                <div class="input-box">
+                    <input type="text" name="fullname" placeholder="Full Name" required>
+                </div>
+                <div class="input-box">
+                    <input type="email" name="email" placeholder="Email" required>
+                </div>
+                <div class="input-box">
+                    <input type="password" id="password" name="password" placeholder="Password" required>
+                </div>
+                <div class="input-box">
+                    <input type="password" id="retypePassword" name="retypePassword" placeholder="Retype Password" required>
+                </div>
+                <button type="submit" class="register-btn">Sign Up</button>
+            </form>
+            <p class="login-text">Already have an account? <a href="login .html">Login here</a></p>
+
+            <p id="message" style="color: red;"></p> 
+        </div>
+    </div>
+
+    <script>
+document.getElementById("registerForm").addEventListener("submit", async (e) => {
+    e.preventDefault(); // Prevent page reload
+
+    const fullname = document.querySelector("input[name='fullname']").value.trim();
+    const email = document.querySelector("input[name='email']").value.trim();
+    const password = document.getElementById("password").value.trim();
+    const retypePassword = document.getElementById("retypePassword").value.trim();
+    const message = document.getElementById("message");
+
+    if (!fullname || !email || !password || !retypePassword) {
+        message.style.color = "red";
+        message.textContent = "❌ All fields are required!";
+        return;
+    }
+
+    if (password !== retypePassword) {
+        message.style.color = "red";
+        message.textContent = "❌ Passwords do not match!";
+        return;
+    }
+
+    console.log("🟢 Sending Data:", { fullname, email, password, retypePassword });
+
+    try {
+        const response = await fetch("http://localhost:3000/register", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ fullname, email, password, retypePassword }),
+        });
+
+        const result = await response.json();
+        console.log("🔵 Server Response:", result);
+
+        if (result.success) {
+            message.style.color = "green";
+            message.textContent = "✅ Registration Successful!";
+            setTimeout(() => {
+                window.location.href = "login .html"; // Redirect after success
+            }, 2000);
+        } else {
+            message.style.color = "red";
+            message.textContent = "❌ " + result.message;
+        }
+    } catch (error) {
+        console.error("❌ Error sending request:", error);
+        message.style.color = "red";
+        message.textContent = "❌ Server error, try again!";
+    }
+});
+</script>
+</body>
+</html>

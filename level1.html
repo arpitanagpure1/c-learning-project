@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Level 1 - C Programming Quiz</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            font-family: 'Orbitron', sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            overflow: hidden;
+            margin: 0;
+        }
+
+        .quiz-container {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            padding: 20px;
+            width: 600px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.3);
+        }
+
+        h2 {
+            color: cyan;
+        }
+
+        .level {
+            color: lime;
+            font-weight: bold;
+            font-size: 22px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        ul li {
+            font-size: 1.2rem;
+            margin: 10px 0;
+            padding: 12px;
+            background: #e0e0e0;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.3s ease-in-out, transform 0.2s;
+            color: black;
+        }
+
+        ul li:hover {
+            background: #d6d6d6;
+        }
+
+        ul li.selected {
+            background: #007bff;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        button {
+            background: #ff00ff;
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 1rem;
+            cursor: pointer;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+            margin-top: 20px;
+        }
+
+        button:hover {
+            background: #00ffff;
+            transform: scale(1.1);
+            box-shadow: 0px 0px 20px rgba(0, 255, 255, 0.8);
+        }
+
+        button:focus {
+            outline: none;
+        }
+
+        #feedback {
+            font-weight: bold;
+            font-size: 20px;
+            margin-top: 10px;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="quiz-container" id="quiz">
+        <div class="level">🚀 Level 1 🚀</div>
+        <div class="quiz-header">
+            <h2 id="question">Question text</h2>
+            <ul id="options-list"></ul>
+        </div>
+        <button id="submit" disabled>Submit</button>
+        <p id="feedback"></p>
+    </div>
+
+    <audio id="correct-sound" src="victory.mp3"></audio>
+    <audio id="incorrect-sound" src="wrong.mp3"></audio>
+
+<script>
+const quizData = [
+    { question: "Which data type is used to store a single character in C?", options: ["char", "int", "float", "double"], correct: "char" },
+    { question: "Which symbol is used to end a statement in C?", options: [".", ":", ";", ","], correct: ";" },
+    { question: "What is the correct syntax for a main function in C?", options: ["void main()", "main()", "int main()", "main(void)"], correct: "int main()" },
+    { question: "How do you print output in C?", options: ["cout", "echo", "printf", "print"], correct: "printf" },
+    { question: "Which header file is required for printf() and scanf()?", options: ["stdio.h", "stdlib.h", "math.h", "string.h"], correct: "stdio.h" },
+    { question: "How do you declare a constant variable in C?", options: ["const int x = 10;", "int const x = 10;", "#define x 10", "All of the above"], correct: "All of the above" },
+    { question: "Which operator is used for pointer dereferencing?", options: ["&", "*", "->", "@"], correct: "*" }
+];
+
+function shuffleArray(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
+}
+
+// Fetch shuffled data from localStorage or create new
+let shuffledQuizData = JSON.parse(localStorage.getItem("shuffledQuizData")) || shuffleArray([...quizData]).slice(0, 5);
+localStorage.setItem("shuffledQuizData", JSON.stringify(shuffleArray([...quizData]).slice(0, 5)));
+
+const quiz = document.getElementById('quiz');
+const questionEl = document.getElementById('question');
+const optionsList = document.getElementById('options-list');
+const submitBtn = document.getElementById('submit');
+const feedback = document.getElementById('feedback');
+
+let currentQuiz = 0;
+let score = 0;
+
+function loadQuiz() {
+    optionsList.innerHTML = "";
+    feedback.innerText = "";
+    submitBtn.disabled = true;
+    
+    const currentQuizData = shuffledQuizData[currentQuiz];
+    questionEl.innerText = currentQuizData.question;
+
+    shuffleArray(currentQuizData.options).forEach(option => {
+        const li = document.createElement("li");
+        li.innerText = option;
+        li.addEventListener("click", () => {
+            document.querySelectorAll("li").forEach(li => li.classList.remove("selected"));
+            li.classList.add("selected");
+            submitBtn.disabled = false;
+        });
+        optionsList.appendChild(li);
+    });
+}
+
+submitBtn.addEventListener('click', () => {
+    const selected = document.querySelector(".selected");
+    if (!selected) return;
+
+    let correctSound = document.getElementById("correct-sound");
+    let incorrectSound = document.getElementById("incorrect-sound");
+
+    if (selected.innerText === shuffledQuizData[currentQuiz].correct) {
+        feedback.innerText = "✔ Correct!";
+        feedback.style.color = "lime";
+        score++;
+        correctSound.play();
+    } else {
+        feedback.innerText = "✖ Incorrect! The correct answer was: " + shuffledQuizData[currentQuiz].correct;
+        feedback.style.color = "red";
+        incorrectSound.play();
+    }
+
+    setTimeout(() => {
+        correctSound.pause();
+        correctSound.currentTime = 0;
+        incorrectSound.pause();
+        incorrectSound.currentTime = 0;
+        currentQuiz++;
+
+        if (currentQuiz < shuffledQuizData.length) {
+            loadQuiz();
+        } else {
+            let resultMessage = `<h2>You scored ${score}/${shuffledQuizData.length}</h2>`;
+            let nextPage = score >= 3 ? "level2.html" : "concept.html";
+            let nextButton = `<button onclick="window.location.href='${nextPage}'">${score >= 3 ? "Next Level" : "Try Again"}</button>`;
+
+            quiz.innerHTML = resultMessage + nextButton;
+        }
+    }, 2000);
+});
+
+loadQuiz();
+</script>
+</body>
+</html>

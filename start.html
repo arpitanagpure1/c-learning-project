@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>C Learning Game</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            background: url('3D image.png') no-repeat center center/cover;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .start-btn {
+            background: linear-gradient(90deg, #00ffff, #ff00ff);
+            color: white;
+            padding: 20px 60px;
+            font-size: 24px;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+            border-radius: 50px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 0 15px rgba(0, 255, 255, 0.8), 0 0 30px rgba(255, 0, 255, 0.8);
+            animation: glow 1.5s infinite alternate;
+        }
+        .start-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 0 25px rgba(0, 255, 255, 1), 0 0 40px rgba(255, 0, 255, 1);
+        }
+        .start-btn:active {
+            transform: scale(0.95);
+        }
+        @keyframes glow {
+            0% {
+                box-shadow: 0 0 15px rgba(0, 255, 255, 0.8), 0 0 30px rgba(255, 0, 255, 0.8);
+            }
+            100% {
+                box-shadow: 0 0 25px rgba(0, 255, 255, 1), 0 0 40px rgba(255, 0, 255, 1);
+            }
+        }
+    </style>
+</head>
+<body>
+    <audio id="background-music" autoplay loop>
+        <source src="C:\Users\Hp\RegistrationApp\road.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <button class="start-btn" onclick="startGame()">Start Learning</button>
+
+    <script>
+        let audio = document.getElementById("background-music");
+
+        function playMusic() {
+            audio.muted = false; // Ensure audio is unmuted
+            setTimeout(() => { // Small delay for better reliability
+                audio.play().then(() => {
+                    console.log("Audio is playing!");
+                }).catch(error => {
+                    console.log("Autoplay blocked. User interaction needed.");
+                });
+            }, 500);
+        }
+
+        audio.addEventListener("canplaythrough", playMusic); // Play when audio is loaded
+
+        function startGame() {
+            audio.pause(); // Stop music before leaving
+            audio.currentTime = 0; // Reset audio
+            window.location.href = "option.html"; // Navigate to option.html
+        }
+    </script>
+</body>
+</html>
