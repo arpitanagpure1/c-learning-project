@@ -23,34 +23,50 @@
             <p id="success-message" style="color: green;"></p>
         </div>
     </div>
+<script>
+document.getElementById("loginForm").addEventListener("submit", async (e) => {
+    e.preventDefault(); // Prevent page reload
 
-    <script>
-        document.getElementById("loginForm").addEventListener("submit", async (e) => {
-            e.preventDefault(); // Prevent page reload
+    const email = document.getElementById("email").value;
+    const password = document.getElementById("password").value;
 
-            const email = document.getElementById("email").value;
-            const password = document.getElementById("password").value;
-
-            const response = await fetch("http://localhost:3000/login", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, password }),
-            });
-
-            const result = await response.json();
-            console.log("🔵 Server Response:", result);
-
-            if (result.success) {
-                document.getElementById("success-message").innerText = "Login successful!";
-                document.getElementById("error-message").innerText = "";
-                setTimeout(() => {
-                    window.location.href = "sure.html"; // Redirect on success
-                }, 1000);
-            } else {
-                document.getElementById("error-message").innerText = result.message;
-                document.getElementById("success-message").innerText = "";
-            }
+    try {
+        const response = await fetch("http://localhost:3000/login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email, password }),
         });
-    </script>
-</body>
+
+        const result = await response.json();
+        console.log("🔵 Server Response:", result); // Debugging
+
+        if (result.success) {
+            if (result.username) {  
+                localStorage.setItem("username", result.username);
+                console.log("✅ Username stored:", result.username);
+            } else {
+                console.error("⚠️ Username is missing in response!");
+            }
+
+            localStorage.setItem("email", result.email);  // ✅ FIX: Ensure email is stored correctly
+            console.log("✅ Email stored in localStorage:", localStorage.getItem("email")); // Debugging
+
+            document.getElementById("success-message").innerText = "Login successful!";
+            document.getElementById("error-message").innerText = "";
+
+            setTimeout(() => {
+                window.location.href = "sure.html";             }, 1000);
+        } else {
+            document.getElementById("error-message").innerText = result.message;
+            document.getElementById("success-message").innerText = "";
+        }
+    } catch (error) {
+        console.error("❌ Error during login:", error);
+        document.getElementById("error-message").innerText = "Something went wrong. Try again!";
+    }
+});
+
+</script>
+
+ </body>
 </html>
