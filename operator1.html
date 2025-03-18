@@ -47,43 +47,41 @@
     }
 
     const allQuestions = [
-    { "question": "Which symbol is used to end a statement in C?", "options": [":", ";", ".", ","], "correct": ";" },
-    { "question": "What is the default return type of `main()` in C?", "options": ["void", "char", "int", "float"], "correct": "int" },
-    { "question": "Which function is used to take user input in C?", "options": ["printf", "scanf", "input", "read"], "correct": "scanf" },
-    { "question": "Which header file is required for input/output operations in C?", "options": ["stdlib.h", "conio.h", "stdio.h", "string.h"], "correct": "stdio.h" },
-    { "question": "What is the correct syntax to declare a variable in C?", "options": ["var x;", "int x;", "x = int;", "declare int x;"], "correct": "int x;" },
-    { "question": "Which operator is used for assigning a value to a variable?", "options": ["==", "=", ":=", "->"], "correct": "=" },
-    { "question": "Which format specifier is used to print an integer in C?", "options": ["%d", "%c", "%f", "%s"], "correct": "%d" },
-    { "question": "Which data type is used to store a single character?", "options": ["char", "string", "int", "float"], "correct": "char" },
-    { "question": "Which of the following is a valid identifier in C?", "options": ["2var", "_variable", "char", "float"], "correct": "_variable" },
-    { "question": "Which keyword is used to define a constant variable in C?", "options": ["final", "constant", "const", "var"], "correct": "const" },
-    { "question": "Which function is used to print text to the screen in C?", "options": ["print()", "output()", "printf()", "display()"], "correct": "printf()" },
-    { "question": "How do you write a single-line comment in C?", "options": ["# This is a comment", "// This is a comment", "/* This is a comment */", "-- This is a comment"], "correct": "// This is a comment" },
-    { "question": "Which of the following is NOT a valid C variable name?", "options": ["_validName", "int", "var123", "my_variable"], "correct": "int" },
-    { "question": "What will be the output of `printf(\"%d\", 5.5);`?", "options": ["5", "5.5", "Error", "0"], "correct": "Error" },
-    { "question": "Which of the following is used for multi-line comments in C?", "options": ["// comment", "/* comment */", "# comment", "-- comment"], "correct": "/* comment */" },
-    { "question": "What is the size of an `int` data type in C (assuming 32-bit system)?", "options": ["2 bytes", "4 bytes", "8 bytes", "16 bytes"], "correct": "4 bytes" },
-    { "question": "Which escape sequence is used for a new line in C?", "options": ["\\t", "\\n", "\\r", "\\b"], "correct": "\\n" },
-    { "question": "What is the correct syntax for defining a macro in C?", "options": ["macro PI 3.14", "#define PI 3.14", "define PI = 3.14;", "#macro PI 3.14"], "correct": "#define PI 3.14" },
-    { "question": "What is the correct way to initialize an integer array in C?", "options": ["int arr = {1, 2, 3};", "int arr[] = {1, 2, 3};", "arr = {1, 2, 3};", "int arr();"], "correct": "int arr[] = {1, 2, 3};" },
-    { "question": "Which keyword is used to return a value from a function in C?", "options": ["end", "stop", "return", "break"], "correct": "return" },
-    { "question": "Which operator is used to access the memory address of a variable?", "options": ["&", "*", "#", "@@"], "correct": "&" },
-    { "question": "What will `sizeof(char)` return in a 32-bit system?", "options": ["1", "2", "4", "8"], "correct": "1" },
-    { "question": "Which function is used to allocate dynamic memory in C?", "options": ["malloc()", "alloc()", "new()", "create()"], "correct": "malloc()" },
-    { "question": "Which keyword is used to include header files in C?", "options": ["include", "#include", "import", "load"], "correct": "#include" },
-    { "question": "What will `printf(\"%d\", sizeof(int));` return on a 32-bit system?", "options": ["2", "4", "8", "16"], "correct": "4" },
-    { "question": "Which symbol is used for the ternary operator in C?", "options": ["?", ":", "::", "->"], "correct": "?" },
-    { "question": "Which statement is used to exit a loop in C?", "options": ["return", "exit", "stop", "break"], "correct": "break" },
-    { "question": "What is the correct syntax for a `for` loop in C?", "options": ["for (i=0; i<5; i++)", "loop(i=0; i<5; i++)", "for i=0 to 5", "for {i=0; i<5; i++}"], "correct": "for (i=0; i<5; i++)" },
-    { "question": "Which operator is used for bitwise AND in C?", "options": ["&", "|", "^", "&&"], "correct": "&" },
-    { "question": "Which keyword is used to declare a pointer in C?", "options": ["*", "&", "ptr", "pointer"], "correct": "*" },
-    { "question": "Which function is used to copy a string in C?", "options": ["strcpy()", "copy()", "strcopy()", "string_copy()"], "correct": "strcpy()" },
-    { "question": "Which function is used to compare two strings in C?", "options": ["strcmp()", "compare()", "strcomp()", "string_compare()"], "correct": "strcmp()" },
-    { "question": "Which keyword is used to create a structure in C?", "options": ["struct", "structure", "record", "object"], "correct": "struct" },
-    { "question": "Which header file is required to use `malloc()` in C?", "options": ["stdio.h", "conio.h", "stdlib.h", "string.h"], "correct": "stdlib.h" }
-];
-
-    let quizData = shuffleArray([...allQuestions]).slice(0, 10);
+    { "question": "Which operator is used for assignment in C?", "options": ["=", "==", ":=", "->"], "correct": "=" },
+    { "question": "Which operator is used to compare two values in C?", "options": ["=", "==", "!=", ">="], "correct": "==" },
+    { "question": "Which of the following is NOT a logical operator in C?", "options": ["&&", "||", "!", "&"], "correct": "&" },
+    { "question": "Which operator is used to get the remainder of a division?", "options": ["/", "%", "*", "//"], "correct": "%" },
+    { "question": "Which operator is used for multiplication in C?", "options": ["x", "*", "×", "mul"], "correct": "*" },
+    { "question": "Which operator is used to increment a variable by 1?", "options": ["++", "+=", "+1", "--"], "correct": "++" },
+    { "question": "Which operator is used to decrement a variable by 1?", "options": ["--", "-=", "-1", "++"], "correct": "--" },
+    { "question": "Which operator is used for bitwise AND operation in C?", "options": ["&&", "&", "and", "AND"], "correct": "&" },
+    { "question": "Which operator is used for bitwise OR operation in C?", "options": ["||", "|", "or", "OR"], "correct": "|" },
+    { "question": "Which operator is used to invert all bits of a number?", "options": ["~", "!", "^", "&"], "correct": "~" },
+    { "question": "What is the result of `5 / 2` in C?", "options": ["2.5", "2", "3", "Error"], "correct": "2" },
+    { "question": "Which operator is used for left shift in C?", "options": [">>", "<<", "<>", "^"], "correct": "<<" },
+    { "question": "Which operator is used for right shift in C?", "options": [">>", "<<", ">>=", "//"], "correct": ">>" },
+    { "question": "Which operator is used to check if two values are not equal?", "options": ["!=", "==", "<>", "><"], "correct": "!=" },
+    { "question": "Which operator is used for bitwise XOR operation in C?", "options": ["&", "|", "^", "~"], "correct": "^" },
+    { "question": "What is the result of `5 % 2` in C?", "options": ["0", "1", "2", "2.5"], "correct": "1" },
+    { "question": "Which operator has the highest precedence in C?", "options": ["*", "+", "()", "="], "correct": "()" },
+    { "question": "What is the associativity of the assignment (`=`) operator?", "options": ["Left to Right", "Right to Left", "Top to Bottom", "None"], "correct": "Right to Left" },
+    { "question": "Which operator is used to access the address of a variable?", "options": ["*", "&", "#", "@"], "correct": "&" },
+    { "question": "Which operator is used to dereference a pointer in C?", "options": ["*", "&", "^", "@"], "correct": "*" },
+    { "question": "What will `sizeof(int)` return on a 32-bit system?", "options": ["2", "4", "8", "16"], "correct": "4" },
+    { "question": "What is the result of `10 >> 1` in C?", "options": ["5", "10", "20", "Error"], "correct": "5" },
+    { "question": "Which operator is used to perform logical NOT operation?", "options": ["!", "~", "^", "not"], "correct": "!" },
+    { "question": "What is the output of `printf(\"%d\", 10 > 5);`?", "options": ["0", "1", "10", "5"], "correct": "1" },
+    { "question": "Which operator is used for conditional expressions in C?", "options": ["if-else", "switch", "?:", "ternary"], "correct": "?:" },
+    { "question": "Which operator is used to add and assign a value in C?", "options": ["=", "+=", "++", "-="], "correct": "+=" },
+    { "question": "What will be the value of `x` after `int x = 5; x += 3;`?", "options": ["3", "5", "8", "15"], "correct": "8" },
+    { "question": "Which of the following is NOT an arithmetic operator in C?", "options": ["+", "-", "/", "&"], "correct": "&" },
+    { "question": "Which operator is used to combine conditions in an `if` statement?", "options": ["&&", "&", "||", "|"], "correct": "&&" },
+    { "question": "Which operator is used to find the size of a variable in bytes?", "options": ["sizeof", "size", "length", "memory"], "correct": "sizeof" },
+    { "question": "Which operator is used to check whether a number is even or odd?", "options": ["/", "*", "%", "+"], "correct": "%" },
+    { "question": "Which operator can be used as an alternative to `if-else` in C?", "options": ["?", "switch", "||", "&&"], "correct": "?" },
+    { "question": "Which bitwise operator can be used to check if a number is even?", "options": ["&", "|", "^", "%"], "correct": "&" },
+    { "question": "Which operator is used for memory allocation in C?", "options": ["new", "malloc", "calloc", "sizeof"], "correct": "sizeof" }
+];let quizData = shuffleArray([...allQuestions]).slice(0, 10);
     let currentQuiz = 0;
     let score = 0;
 
@@ -103,7 +101,7 @@
 
     function autoSubmit() {
         clearInterval(timer);
-        document.getElementById("feedback").innerText = "⏳ Time up! Moving to the next question...";
+        document.getElementById("feedback").innerText = "⏳ Time up! ";
         setTimeout(() => {
             currentQuiz++;
             if (currentQuiz < quizData.length) {
@@ -172,7 +170,7 @@
         fetch("http://localhost:3000/submit-score", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, concept_id: 1, level1_score: finalScore }),
+            body: JSON.stringify({ email, concept_id: 3, level1_score: finalScore }),
         })
         .then(response => response.json())
         .then(data => {
@@ -196,3 +194,4 @@
 </script>
 </body>
 </html>
+

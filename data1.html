@@ -47,40 +47,40 @@
     }
 
     const allQuestions = [
-    { "question": "Which symbol is used to end a statement in C?", "options": [":", ";", ".", ","], "correct": ";" },
-    { "question": "What is the default return type of `main()` in C?", "options": ["void", "char", "int", "float"], "correct": "int" },
-    { "question": "Which function is used to take user input in C?", "options": ["printf", "scanf", "input", "read"], "correct": "scanf" },
-    { "question": "Which header file is required for input/output operations in C?", "options": ["stdlib.h", "conio.h", "stdio.h", "string.h"], "correct": "stdio.h" },
-    { "question": "What is the correct syntax to declare a variable in C?", "options": ["var x;", "int x;", "x = int;", "declare int x;"], "correct": "int x;" },
-    { "question": "Which operator is used for assigning a value to a variable?", "options": ["==", "=", ":=", "->"], "correct": "=" },
-    { "question": "Which format specifier is used to print an integer in C?", "options": ["%d", "%c", "%f", "%s"], "correct": "%d" },
-    { "question": "Which data type is used to store a single character?", "options": ["char", "string", "int", "float"], "correct": "char" },
-    { "question": "Which of the following is a valid identifier in C?", "options": ["2var", "_variable", "char", "float"], "correct": "_variable" },
+    { "question": "Which data type is used to store whole numbers in C?", "options": ["int", "float", "char", "double"], "correct": "int" },
+    { "question": "What is the size of a `char` data type in C on a 32-bit system?", "options": ["1 byte", "2 bytes", "4 bytes", "8 bytes"], "correct": "1 byte" },
+    { "question": "Which data type is used to store a single character in C?", "options": ["char", "string", "int", "float"], "correct": "char" },
+    { "question": "Which data type is used to store decimal numbers in C?", "options": ["int", "float", "char", "bool"], "correct": "float" },
+    { "question": "Which format specifier is used to print a floating-point number in C?", "options": ["%d", "%c", "%f", "%s"], "correct": "%f" },
+    { "question": "What will `sizeof(int)` return on a 32-bit system?", "options": ["2", "4", "8", "16"], "correct": "4" },
+    { "question": "What is the default value of an uninitialized `int` variable in C?", "options": ["0", "1", "Garbage value", "NULL"], "correct": "Garbage value" },
     { "question": "Which keyword is used to define a constant variable in C?", "options": ["final", "constant", "const", "var"], "correct": "const" },
-    { "question": "Which function is used to print text to the screen in C?", "options": ["print()", "output()", "printf()", "display()"], "correct": "printf()" },
-    { "question": "How do you write a single-line comment in C?", "options": ["# This is a comment", "// This is a comment", "/* This is a comment */", "-- This is a comment"], "correct": "// This is a comment" },
-    { "question": "Which of the following is NOT a valid C variable name?", "options": ["_validName", "int", "var123", "my_variable"], "correct": "int" },
-    { "question": "What will be the output of `printf(\"%d\", 5.5);`?", "options": ["5", "5.5", "Error", "0"], "correct": "Error" },
-    { "question": "Which of the following is used for multi-line comments in C?", "options": ["// comment", "/* comment */", "# comment", "-- comment"], "correct": "/* comment */" },
-    { "question": "What is the size of an `int` data type in C (assuming 32-bit system)?", "options": ["2 bytes", "4 bytes", "8 bytes", "16 bytes"], "correct": "4 bytes" },
-    { "question": "Which escape sequence is used for a new line in C?", "options": ["\\t", "\\n", "\\r", "\\b"], "correct": "\\n" },
-    { "question": "What is the correct syntax for defining a macro in C?", "options": ["macro PI 3.14", "#define PI 3.14", "define PI = 3.14;", "#macro PI 3.14"], "correct": "#define PI 3.14" },
-    { "question": "What is the correct way to initialize an integer array in C?", "options": ["int arr = {1, 2, 3};", "int arr[] = {1, 2, 3};", "arr = {1, 2, 3};", "int arr();"], "correct": "int arr[] = {1, 2, 3};" },
-    { "question": "Which keyword is used to return a value from a function in C?", "options": ["end", "stop", "return", "break"], "correct": "return" },
-    { "question": "Which operator is used to access the memory address of a variable?", "options": ["&", "*", "#", "@@"], "correct": "&" },
-    { "question": "What will `sizeof(char)` return in a 32-bit system?", "options": ["1", "2", "4", "8"], "correct": "1" },
-    { "question": "Which function is used to allocate dynamic memory in C?", "options": ["malloc()", "alloc()", "new()", "create()"], "correct": "malloc()" },
-    { "question": "Which keyword is used to include header files in C?", "options": ["include", "#include", "import", "load"], "correct": "#include" },
-    { "question": "What will `printf(\"%d\", sizeof(int));` return on a 32-bit system?", "options": ["2", "4", "8", "16"], "correct": "4" },
-    { "question": "Which symbol is used for the ternary operator in C?", "options": ["?", ":", "::", "->"], "correct": "?" },
-    { "question": "Which statement is used to exit a loop in C?", "options": ["return", "exit", "stop", "break"], "correct": "break" },
-    { "question": "What is the correct syntax for a `for` loop in C?", "options": ["for (i=0; i<5; i++)", "loop(i=0; i<5; i++)", "for i=0 to 5", "for {i=0; i<5; i++}"], "correct": "for (i=0; i<5; i++)" },
-    { "question": "Which operator is used for bitwise AND in C?", "options": ["&", "|", "^", "&&"], "correct": "&" },
-    { "question": "Which keyword is used to declare a pointer in C?", "options": ["*", "&", "ptr", "pointer"], "correct": "*" },
-    { "question": "Which function is used to copy a string in C?", "options": ["strcpy()", "copy()", "strcopy()", "string_copy()"], "correct": "strcpy()" },
-    { "question": "Which function is used to compare two strings in C?", "options": ["strcmp()", "compare()", "strcomp()", "string_compare()"], "correct": "strcmp()" },
-    { "question": "Which keyword is used to create a structure in C?", "options": ["struct", "structure", "record", "object"], "correct": "struct" },
-    { "question": "Which header file is required to use `malloc()` in C?", "options": ["stdio.h", "conio.h", "stdlib.h", "string.h"], "correct": "stdlib.h" }
+    { "question": "Which data type is used for large floating-point numbers in C?", "options": ["float", "double", "int", "long"], "correct": "double" },
+    { "question": "Which format specifier is used for a `char` data type in C?", "options": ["%c", "%s", "%d", "%f"], "correct": "%c" },
+    { "question": "Which operator is used to access the memory address of a variable?", "options": ["&", "*", "#", "@"], "correct": "&" },
+    { "question": "Which keyword is used to define a variable inside a function?", "options": ["auto", "register", "static", "global"], "correct": "auto" },
+    { "question": "Which data type has the largest range in C?", "options": ["int", "float", "double", "long double"], "correct": "long double" },
+    { "question": "Which format specifier is used to print a `double` value in C?", "options": ["%lf", "%f", "%d", "%ld"], "correct": "%lf" },
+    { "question": "Which of the following is NOT a valid C variable name?", "options": ["_variable", "int", "var123", "myVar"], "correct": "int" },
+    { "question": "Which keyword is used to create an alias for a data type in C?", "options": ["typedef", "define", "alias", "macro"], "correct": "typedef" },
+    { "question": "Which of the following is NOT a primitive data type in C?", "options": ["int", "float", "array", "char"], "correct": "array" },
+    { "question": "Which data type should be used for storing a person's age?", "options": ["char", "int", "float", "double"], "correct": "int" },
+    { "question": "Which keyword is used to store a variable that retains its value between function calls?", "options": ["auto", "static", "register", "extern"], "correct": "static" },
+    { "question": "Which of the following data types can store only two values: true or false?", "options": ["int", "bool", "float", "double"], "correct": "bool" },
+    { "question": "Which modifier is used to store large integer values in C?", "options": ["short", "long", "float", "unsigned"], "correct": "long" },
+    { "question": "What will `sizeof(float)` return on a 32-bit system?", "options": ["2", "4", "8", "16"], "correct": "4" },
+    { "question": "Which keyword is used to define a global variable in C?", "options": ["auto", "register", "static", "extern"], "correct": "extern" },
+    { "question": "Which of the following is a valid C variable declaration?", "options": ["int x;", "x = int;", "var x;", "declare int x;"], "correct": "int x;" },
+    { "question": "Which format specifier is used to print an unsigned integer in C?", "options": ["%d", "%c", "%u", "%f"], "correct": "%u" },
+    { "question": "Which operator is used to dereference a pointer in C?", "options": ["*", "&", "->", "@@"], "correct": "*" },
+    { "question": "What will `sizeof(double)` return on a 64-bit system?", "options": ["4", "8", "16", "32"], "correct": "8" },
+    { "question": "Which of the following correctly initializes a `char` variable?", "options": ["char ch = 'A';", "char ch = \"A\";", "char ch = A;", "char ch = ['A'];"], "correct": "char ch = 'A';" },
+    { "question": "Which format specifier is used to print a `long` integer in C?", "options": ["%ld", "%l", "%d", "%f"], "correct": "%ld" },
+    { "question": "Which of the following is NOT a valid integer type in C?", "options": ["short", "long", "integer", "unsigned"], "correct": "integer" },
+    { "question": "Which data type is typically used to store a person's height?", "options": ["int", "float", "char", "bool"], "correct": "float" },
+    { "question": "What will `sizeof(long double)` return on a 64-bit system?", "options": ["8", "10", "16", "32"], "correct": "16" },
+    { "question": "Which keyword is used to declare an unmodifiable variable in C?", "options": ["final", "constant", "const", "var"], "correct": "const" },
+    { "question": "Which type modifier makes an integer variable capable of storing only positive values?", "options": ["signed", "unsigned", "volatile", "static"], "correct": "unsigned" }
 ];
 
     let quizData = shuffleArray([...allQuestions]).slice(0, 10);
@@ -103,7 +103,7 @@
 
     function autoSubmit() {
         clearInterval(timer);
-        document.getElementById("feedback").innerText = "⏳ Time up! Moving to the next question...";
+        document.getElementById("feedback").innerText = "⏳ Time up! ";
         setTimeout(() => {
             currentQuiz++;
             if (currentQuiz < quizData.length) {
@@ -172,7 +172,7 @@
         fetch("http://localhost:3000/submit-score", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, concept_id: 1, level1_score: finalScore }),
+            body: JSON.stringify({ email, concept_id: 2, level1_score: finalScore }),
         })
         .then(response => response.json())
         .then(data => {
