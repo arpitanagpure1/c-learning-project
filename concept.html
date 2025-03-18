@@ -7,46 +7,59 @@
     <style>  
         * {
             box-sizing: border-box;
+            margin: 0;
+            padding: 0;
         }
 
         body {
             font-family: 'Orbitron', sans-serif;
-            margin: 0;
-            padding: 0;
             background: black;
             color: white;
             text-align: center;
-            overflow-y: auto;
-            height: auto;
+        }
+
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(90deg, #ff00ff, #00ffff);
+            padding: 15px;
+            box-shadow: 0 0 10px cyan;
+            position: relative;
+        }
+
+        
+        .user-info {
+            font-size: 18px;
+            font-weight: bold;
+            background: rgba(0, 255, 255, 0.8);
+            color: black;
+            padding: 10px 20px;
+            border-radius: 10px;
+        }
+         .navbar-center {
+           font-size: 22px;
+            font-weight: bold;
+            text-shadow: 0 0 15px cyan;
+            flex-grow: 1;
+            text-align: center;
+
+        }
+
+
+        .score {
+            font-size: 18px;
+            font-weight: bold;
+            background: rgba(0, 255, 255, 0.8);
+            color: black;
+            padding: 10px 20px;
+            border-radius: 10px;
         }
 
         .container {
             max-width: 800px;
             margin: 20px auto;
             text-align: left;
-            padding-bottom: 50px;
-        }
-
-        h1 {
-            background: linear-gradient(90deg, #ff00ff, #00ffff);
-            color: white;
-            padding: 20px;
-            margin: 0;
-            font-size: 30px;
-            text-shadow: 0px 0px 10px cyan;
-            position: relative;
-        }
-
-        .score {
-            position: absolute;
-            top: 10px;
-            right: 20px;
-            background: rgba(0, 255, 255, 0.8);
-            color: black;
-            padding: 10px 20px;
-            border-radius: 10px;
-            font-size: 20px;
-            font-weight: bold;
         }
 
         .accordion {
@@ -58,119 +71,100 @@
             border: 1px solid cyan;
             text-align: left;
             font-size: 18px;
-            transition: 0.3s;
-            border-radius: 5px;
-            margin-bottom: 5px;
-            position: relative;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-radius: 5px;
+            margin-bottom: 5px;
+            transition: 0.3s;
         }
 
         .accordion:hover {
             background: cyan;
             color: black;
-            transform: scale(1.05);
         }
 
         .array-icon {
             cursor: pointer;
             width: 30px;
             height: 30px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            filter: drop-shadow(0 0 10px cyan);
+            transition: transform 0.3s;
         }
 
         .array-icon:hover {
-            transform: scale(1.2) rotate(10deg);
-            filter: drop-shadow(0 0 15px cyan);
-        }
-        
-        /* Reset Button */
-        .reset-btn {
-            margin-top: 20px;
-            padding: 10px 20px;
-            font-size: 16px;
-            font-weight: bold;
-            background: red;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-        }
-
-        .reset-btn:hover {
-            background: darkred;
+            transform: scale(1.2);
         }
     </style>
 </head>
 <body>
 
-<h1>🚀 C Programming Concepts - Game Mode 🔥
-    <span class="score">Score: <span id="score">0</span></span>
-</h1>
+<div class="navbar">
+        <span class="user-info">👤 User:guest </span>
+        <span class="navbar-center">🚀 C Programming Concepts 🔥</span>
+        <span class="score">⭐ Score: <span id="score">0</span>
+    </div>
 
 <div class="container">
-    <button class="accordion" onclick="openTopic('level1.html', 1)">1️⃣ Basics of C Programming 
-        <img src="image.JPG" class="array-icon">
+    <button class="accordion" onclick="openConcept('notes1.html')">1️⃣ Basics of C Programming 
+        <img src="image.JPG" class="array-icon" onclick="openDetails('level1.html', event)">
     </button>
-    <button class="accordion" onclick="openTopic('data.html', 1)">2️⃣ Data Types & Variables 
-        <img src="image.JPG" class="array-icon">
+    <button class="accordion" onclick="openConcept('notes2.html')">2️⃣ Data Types & Variables 
+        <img src="image.JPG" class="array-icon" onclick="openDetails('data1.html', event)">
     </button>
-    <button class="accordion" onclick="openTopic('operator.html', 1)">3️⃣ Operators 
-        <img src="image.JPG" class="array-icon">
+    <button class="accordion" onclick="openConcept('notes3.html')">3️⃣ Operators 
+        <img src="image.JPG" class="array-icon" onclick="openDetails('operator1.html', event)">
     </button>
-    <button class="accordion" onclick="openTopic('control.html', 1)">4️⃣ Control Statements 
-        <img src="image.JPG" class="array-icon">
+    <button class="accordion" onclick="openConcept('notes4.html')">4️⃣ Control Statements 
+        <img src="image.JPG" class="array-icon" onclick="openDetails('control1.html', event)">
     </button>
-    <button class="accordion" onclick="openTopic('loop.html', 1)">5️⃣ Loops 
-        <img src="image.JPG" class="array-icon">
+    <button class="accordion" onclick="openConcept('notes5.html')">5️⃣ Loops 
+        <img src="image.JPG" class="array-icon" onclick="openDetails('loop1.html', event)">
     </button>
-    <button class="accordion" onclick="openTopic('function.html', 1)">6️⃣ Functions 
-        <img src="image.JPG" class="array-icon">
+    <button class="accordion" onclick="openConcept('notes6.html')">6️⃣ Functions 
+        <img src="image.JPG" class="array-icon" onclick="openDetails('function1.html', event)">
     </button>
-    <button class="accordion" onclick="openTopic('array.html', 1)">7️⃣ Arrays 
-        <img src="image.JPG" class="array-icon">
+    <button class="accordion" onclick="openConcept('notes7.html')">7️⃣ Arrays 
+        <img src="image.JPG"class="array-icon" onclick="openDetails('array1.html', event)">
     </button>
-    <button class="accordion" onclick="openTopic('pointer.html', 1)">8️⃣ Pointers 
-        <img src="image.JPG" class="array-icon">
+    <button class="accordion" onclick="openConcept('notes8.html')">8️⃣ Pointers 
+        <img src="image.JPG" class="array-icon" onclick="openDetails('pointer1.html', event)">
     </button>
-    <button class="accordion" onclick="openTopic('filehand.html', 3)">9️⃣ File Handling 
-        <img src="image.JPG" class="array-icon">
+    <button class="accordion" onclick="openConcept('notes9.html')">9️⃣ File Handling 
+        <img src="image.JPG" class="array-icon" onclick="openDetails('file1.html', event)">
     </button>
-
-    <!-- Reset Button -->
-    <button class="reset-btn" onclick="resetScore()">🔄 Reset Score</button>
 </div>
 
 <script>
-    // Load score when the page loads
-    document.addEventListener("DOMContentLoaded", function () {
-        let savedScore = localStorage.getItem("userScore") || 0;
-        document.getElementById("score").innerText = savedScore;
-    });
+  
+document.addEventListener("DOMContentLoaded", function () {
+    // Fetch username from localStorage
+    const username = localStorage.getItem("username") || "Guest";
+    document.getElementById("username").innerText = `User: ${username}`;
 
-    function updateScore(newPoints) {
-        let currentScore = localStorage.getItem("userScore") || 0;
-        currentScore = parseInt(currentScore) + newPoints;
-        localStorage.setItem("userScore", currentScore);
-        document.getElementById("score").innerText = currentScore;
-    }
+    // Fetch saved score or set it to 0 if not found
+    let savedScore = localStorage.getItem("userScore") || 0;
+    document.getElementById("score").innerText = savedScore;
+});
 
-    function resetScore() {
-        localStorage.setItem("userScore", 0);
-        document.getElementById("score").innerText = "0";
-    }
+// Function to update score
+function updateScore(newPoints) {
+    let currentScore = localStorage.getItem("userScore") || 0;
+    currentScore = parseInt(currentScore) + newPoints;
+    localStorage.setItem("userScore", currentScore);
+    document.getElementById("score").innerText = currentScore;
+}
 
-    function openTopic(page, points) {
-        updateScore(points);
-        window.location.href = page;
-    }
+// Function to open concept page and update score
+function openConcept(page) {
+    updateScore(1);
+    window.location.href = page;
+}
 
-    function goToNextConcept(nextConceptURL) {
-        window.location.href = nextConceptURL;
-    }
-</script>
-
+// Function to open details page without affecting concept navigation
+function openDetails(page, event) {
+    event.stopPropagation(); // Prevent triggering concept click
+    window.location.href = page;
+}
+ </script>
 </body>
 </html>
