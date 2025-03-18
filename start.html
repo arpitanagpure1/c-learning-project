@@ -49,7 +49,7 @@
 </head>
 <body>
     <audio id="background-music" autoplay loop>
-        <source src="C:\Users\Hp\RegistrationApp\road.mp3" type="audio/mpeg">
+        <source src="road.mp3" type="audio/mpeg">
         Your browser does not support the audio element.
     </audio>
 
@@ -59,22 +59,16 @@
         let audio = document.getElementById("background-music");
 
         function playMusic() {
-            audio.muted = false; // Ensure audio is unmuted
-            setTimeout(() => { // Small delay for better reliability
-                audio.play().then(() => {
-                    console.log("Audio is playing!");
-                }).catch(error => {
-                    console.log("Autoplay blocked. User interaction needed.");
-                });
-            }, 500);
+            audio.muted = false; // Unmute audio
+            audio.play().catch(error => console.log("Autoplay blocked. Click to play."));
         }
 
-        audio.addEventListener("canplaythrough", playMusic); // Play when audio is loaded
+        audio.addEventListener("canplaythrough", playMusic);
 
         function startGame() {
             audio.pause(); // Stop music before leaving
-            audio.currentTime = 0; // Reset audio
-            window.location.href = "option.html"; // Navigate to option.html
+            audio.currentTime = 0; // Reset audio position
+            window.location.href = "instruction.html"; // Navigate to new file
         }
     </script>
 </body>

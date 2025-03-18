@@ -4,149 +4,110 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Level 1 - C Programming Quiz</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+   <link rel="stylesheet" href="L1.css">
 
-        body {
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-            font-family: 'Orbitron', sans-serif;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            overflow: hidden;
-            margin: 0;
-        }
-
-        .quiz-container {
-            background-color: rgba(255, 255, 255, 0.1);
-            border-radius: 15px;
-            padding: 20px;
-            width: 600px;
-            text-align: center;
-            box-shadow: 0 10px 30px rgba(0, 255, 255, 0.3);
-        }
-
-        h2 {
-            color: cyan;
-        }
-
-        .level {
-            color: lime;
-            font-weight: bold;
-            font-size: 22px;
-        }
-
-        ul {
-            list-style-type: none;
-            padding: 0;
-        }
-
-        ul li {
-            font-size: 1.2rem;
-            margin: 10px 0;
-            padding: 12px;
-            background: #e0e0e0;
-            border-radius: 8px;
-            cursor: pointer;
-            transition: background 0.3s ease-in-out, transform 0.2s;
-            color: black;
-        }
-
-        ul li:hover {
-            background: #d6d6d6;
-        }
-
-        ul li.selected {
-            background: #007bff;
-            color: white;
-            transform: scale(1.05);
-        }
-
-        button {
-            background: #ff00ff;
-            color: white;
-            border: none;
-            width: 100%;
-            padding: 1rem;
-            cursor: pointer;
-            border-radius: 10px;
-            font-size: 1.2rem;
-            transition: transform 0.3s, box-shadow 0.3s;
-            margin-top: 20px;
-        }
-
-        button:hover {
-            background: #00ffff;
-            transform: scale(1.1);
-            box-shadow: 0px 0px 20px rgba(0, 255, 255, 0.8);
-        }
-
-        button:focus {
-            outline: none;
-        }
-
-        #feedback {
-            font-weight: bold;
-            font-size: 20px;
-            margin-top: 10px;
-        }
-
-    </style>
-</head>
+    </head>
 <body>
+    <div class="navbar">
+       
+        <p>User: <span id="user-name">Guest</span></p>
+        <span class="score">Score: <span id="score">0</span></span>
+    </div>
     <div class="quiz-container" id="quiz">
-        <div class="level">🚀 Level 1 🚀</div>
-        <div class="quiz-header">
-            <h2 id="question">Question text</h2>
-            <ul id="options-list"></ul>
-        </div>
+        <h1 class="title">🚀  Level 1-Quiz  🚀</h1>
+        <h3 id="question-number" class="question-number">🔹 Question 1/10 🔹</h3>
+        <h2 id="question" class="question"></h2>
+               <p class="timer" id="timer">Time left: 30s</p>
+        <ul id="options-list"></ul>
         <button id="submit" disabled>Submit</button>
         <p id="feedback"></p>
-    </div>
-
-    <audio id="correct-sound" src="victory.mp3"></audio>
-    <audio id="incorrect-sound" src="wrong.mp3"></audio>
-
+    </div>    
 <script>
-const quizData = [
-    { question: "Which data type is used to store a single character in C?", options: ["char", "int", "float", "double"], correct: "char" },
-    { question: "Which symbol is used to end a statement in C?", options: [".", ":", ";", ","], correct: ";" },
-    { question: "What is the correct syntax for a main function in C?", options: ["void main()", "main()", "int main()", "main(void)"], correct: "int main()" },
-    { question: "How do you print output in C?", options: ["cout", "echo", "printf", "print"], correct: "printf" },
-    { question: "Which header file is required for printf() and scanf()?", options: ["stdio.h", "stdlib.h", "math.h", "string.h"], correct: "stdio.h" },
-    { question: "How do you declare a constant variable in C?", options: ["const int x = 10;", "int const x = 10;", "#define x 10", "All of the above"], correct: "All of the above" },
-    { question: "Which operator is used for pointer dereferencing?", options: ["&", "*", "->", "@"], correct: "*" }
-];
-
-function shuffleArray(array) {
-    for (let i = array.length - 1; i > 0; i--) {
-        const j = Math.floor(Math.random() * (i + 1));
-        [array[i], array[j]] = [array[j], array[i]];
+        const correctSound = new Audio('victory.mp3');
+        const incorrectSound = new Audio('wrong.mp3');
+        const warningSound = new Audio('warning.mp3');
+        let timer, timeLeft = 30;
+  
+ document.addEventListener("DOMContentLoaded", () => {
+    const username = localStorage.getItem("username"); 
+    if (username) {
+        document.getElementById("user-name").innerText = username;  // ✅ Display username
+    } else {
+        console.warn("⚠️ No username found, showing Guest");
     }
-    return array;
-}
+});
 
-// Fetch shuffled data from localStorage or create new
-let shuffledQuizData = JSON.parse(localStorage.getItem("shuffledQuizData")) || shuffleArray([...quizData]).slice(0, 5);
-localStorage.setItem("shuffledQuizData", JSON.stringify(shuffleArray([...quizData]).slice(0, 5)));
-
-const quiz = document.getElementById('quiz');
-const questionEl = document.getElementById('question');
-const optionsList = document.getElementById('options-list');
-const submitBtn = document.getElementById('submit');
-const feedback = document.getElementById('feedback');
-
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+        
+        const allQuestions = [
+    { question: "Which symbol is used to end a statement in C?", options: [":", ";", ".", ","], correct: ";" },
+    { question: "What is the default return type of `main()` in C?", options: ["void", "char", "int", "float"], correct: "int" },
+    { question: "Which function is used to take user input in C?", options: ["printf", "scanf", "input", "read"], correct: "scanf" },
+    { question: "Which header file is required for input/output operations in C?", options: ["stdlib.h", "conio.h", "stdio.h", "string.h"], correct: "stdio.h" },
+    { question: "What is the correct syntax to declare a variable in C?", options: ["var x;", "int x;", "x = int;", "declare int x;"], correct: "int x;" },
+    { question: "Which operator is used for assigning a value to a variable?", options: ["==", "=", ":=", "->"], correct: "=" },
+    { question: "Which format specifier is used to print an integer in C?", options: ["%d", "%c", "%f", "%s"], correct: "%d" },
+    { question: "Which data type is used to store a single character?", options: ["char", "string", "int", "float"], correct: "char" },
+    { question: "Which of the following is a valid identifier in C?", options: ["2var", "_variable", "char", "float"], correct: "_variable" },
+    { question: "Which keyword is used to define a constant variable in C?", options: ["final", "constant", "const", "var"], correct: "const" },
+    { question: "Which function is used to print text to the screen in C?", options: ["print()", "output()", "printf()", "display()"], correct: "printf()" },
+    { question: "How do you write a single-line comment in C?", options: ["# This is a comment", "// This is a comment", "/* This is a comment */", "-- This is a comment"], correct: "// This is a comment" },
+    { question: "Which of the following is NOT a valid C variable name?", options: ["_validName", "int", "var123", "my_variable"], correct: "int" },
+    { question: "What will be the output of `printf(\"%d\", 5.5);`?", options: ["5", "5.5", "Error", "0"], correct: "Error" },
+    { question: "Which of the following is used for multi-line comments in C?", options: ["// comment", "/* comment */", "# comment", "-- comment"], correct: "/* comment */" },
+    { question: "What is the size of an `int` data type in C (assuming 32-bit system)?", options: ["2 bytes", "4 bytes", "8 bytes", "16 bytes"], correct: "4 bytes" },
+    { question: "Which escape sequence is used for a new line in C?", options: ["\\t", "\\n", "\\r", "\\b"], correct: "\\n" },
+    { question: "What is the correct syntax for defining a macro in C?", options: ["macro PI 3.14", "#define PI 3.14", "define PI = 3.14;", "#macro PI 3.14"], correct: "#define PI 3.14" },
+    { question: "What is the correct way to initialize an integer array in C?", options: ["int arr = {1, 2, 3};", "int arr[] = {1, 2, 3};", "arr = {1, 2, 3};", "int arr();"], correct: "int arr[] = {1, 2, 3};" },
+    { question: "Which keyword is used to return a value from a function in C?", options: ["end", "stop", "return", "break"], correct: "return" },
+    { question: "Which operator is used to access the memory address of a variable?", options: ["&", "*", "#", "@@"], correct: "&" },
+    { question: "What will `sizeof(char)` return in a 32-bit system?", options: ["1", "2", "4", "8"], correct: "1" },
+    { question: "Which function is used to allocate dynamic memory in C?", options: ["malloc()", "alloc()", "new()", "create()"], correct: "malloc()" },
+    { question: "Which keyword is used to include header files in C?", options: ["include", "#include", "import", "load"], correct: "#include" }
+];
+       let quizData = shuffleArray([...allQuestions]).slice(0, 3);
 let currentQuiz = 0;
 let score = 0;
 
+function startTimer() {
+    timeLeft = 30;
+    document.getElementById("timer").innerText = `Time left: ${timeLeft}s`;
+    timer = setInterval(() => {
+        timeLeft--;
+        document.getElementById("timer").innerText = `Time left: ${timeLeft}s`;
+        if (timeLeft === 10) warningSound.play();
+        if (timeLeft === 0) {
+            clearInterval(timer);
+            autoSubmit();
+        }
+    }, 1000);
+}
+
+function autoSubmit() {
+    const selected = document.querySelector(".selected");
+    if (!selected) {
+        document.getElementById("feedback").innerText = "Time up! No answer selected.";
+    } else {
+        document.getElementById("submit").click();
+    }
+}
+
 function loadQuiz() {
-    optionsList.innerHTML = "";
-    feedback.innerText = "";
-    submitBtn.disabled = true;
-    
-    const currentQuizData = shuffledQuizData[currentQuiz];
-    questionEl.innerText = currentQuizData.question;
+    clearInterval(timer);
+    startTimer();
+    document.getElementById("options-list").innerHTML = "";
+    document.getElementById("feedback").innerText = "";
+    document.getElementById("submit").disabled = true;
+
+    const currentQuizData = quizData[currentQuiz];
+    document.getElementById("question").innerText = currentQuizData.question;
+    document.getElementById("question-number").innerText = `Question ${currentQuiz + 1}/15`;
 
     shuffleArray(currentQuizData.options).forEach(option => {
         const li = document.createElement("li");
@@ -154,49 +115,83 @@ function loadQuiz() {
         li.addEventListener("click", () => {
             document.querySelectorAll("li").forEach(li => li.classList.remove("selected"));
             li.classList.add("selected");
-            submitBtn.disabled = false;
+            document.getElementById("submit").disabled = false;
         });
-        optionsList.appendChild(li);
+        document.getElementById("options-list").appendChild(li);
     });
 }
 
-submitBtn.addEventListener('click', () => {
+// ✅ Submit answer and move to next question
+document.getElementById("submit").addEventListener("click", () => {
+    clearInterval(timer);
     const selected = document.querySelector(".selected");
     if (!selected) return;
 
-    let correctSound = document.getElementById("correct-sound");
-    let incorrectSound = document.getElementById("incorrect-sound");
-
-    if (selected.innerText === shuffledQuizData[currentQuiz].correct) {
-        feedback.innerText = "✔ Correct!";
-        feedback.style.color = "lime";
-        score++;
+    if (selected.innerText === quizData[currentQuiz].correct) {
+        document.getElementById("feedback").innerText = "✔ Correct!";
         correctSound.play();
+        score++;
     } else {
-        feedback.innerText = "✖ Incorrect! The correct answer was: " + shuffledQuizData[currentQuiz].correct;
-        feedback.style.color = "red";
+        document.getElementById("feedback").innerText = `✖ Incorrect! Correct answer: ${quizData[currentQuiz].correct}`;
         incorrectSound.play();
     }
+    document.getElementById("score").innerText = score;
 
     setTimeout(() => {
-        correctSound.pause();
-        correctSound.currentTime = 0;
-        incorrectSound.pause();
-        incorrectSound.currentTime = 0;
         currentQuiz++;
-
-        if (currentQuiz < shuffledQuizData.length) {
+        if (currentQuiz < quizData.length) {
             loadQuiz();
         } else {
-            let resultMessage = `<h2>You scored ${score}/${shuffledQuizData.length}</h2>`;
-            let nextPage = score >= 3 ? "level2.html" : "concept.html";
-            let nextButton = `<button onclick="window.location.href='${nextPage}'">${score >= 3 ? "Next Level" : "Try Again"}</button>`;
-
-            quiz.innerHTML = resultMessage + nextButton;
+            endQuiz(); // ✅ Submit final score and redirect
         }
     }, 2000);
 });
 
+// ✅ Submit score to the backend
+function submitScore(finalScore) {
+    const email = localStorage.getItem("email"); // ✅ Keep email for DB
+    console.log("📢 Retrieved email from localStorage:", email); // Debugging
+
+    const concept_id = 1; // Example: Concept ID for "Variables & Data Types"
+     
+    if (!email) {
+        alert("❌ Email not found! Please log in again.");
+        return;
+    }
+fetch("http://localhost:3000/submit-score", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, concept_id: 1, level1_score: finalScore }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("✅ Server Response:", data);
+        alert("Score saved successfully!");
+    })
+    .catch(error => {
+        console.error("❌ Error submitting score:", error);
+    });
+}
+    
+// ✅ End the quiz and submit the final score
+function endQuiz() {
+    submitScore(score);
+    setTimeout(() => {
+        if (score < 1) {
+            document.getElementById("quiz").innerHTML = `<h2>Failed! Your Score: ${score}/15</h2>`;
+            setTimeout(() => {
+                window.location.href = "concept.html"; // Redirect to concept page
+            }, 3000);
+        } else {
+            document.getElementById("quiz").innerHTML = `<h2>Congratulations! Your Score: ${score}/15</h2>`;
+            setTimeout(() => {
+                window.location.href = "level2.html"; // Redirect to Level 2
+            }, 3000);
+        }
+    }, 2000);
+}
+
+// ✅ Start quiz
 loadQuiz();
 </script>
 </body>

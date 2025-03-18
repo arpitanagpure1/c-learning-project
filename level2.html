@@ -3,163 +3,175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Fix the C Code - 3D Quiz</title>
-     <style>
-        body {
-            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
-            font-family: Arial, sans-serif;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            margin: 0;
-            flex-direction: column;
-        }
-        .quiz-container {
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 15px;
-            box-shadow: 0 0 30px cyan;
-            width: 600px;
-            text-align: center;
-            padding: 20px;
-            transform: perspective(1000px) rotateY(0deg);
-            transition: transform 0.5s;
-        }
-        .quiz-container:hover {
-            transform: perspective(1000px) rotateY(5deg);
-        }
-        h2 {
-            color: cyan;
-        }
-        pre {
-            background: rgba(255, 255, 255, 0.2);
-            padding: 10px;
-            border-radius: 10px;
-            color: white;
-            font-size: 16px;
-        }
-        textarea {
-            width: 90%;
-            height: 150px;
-            font-size: 16px;
-            padding: 10px;
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: 1px solid cyan;
-            border-radius: 10px;
-            outline: none;
-        }
-        button {
-            background: linear-gradient(90deg, #ff00ff, #00ffff);
-            color: white;
-            border: none;
-            padding: 10px;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 1.1rem;
-            margin-top: 15px;
-            transition: transform 0.2s, box-shadow 0.3s;
-        }
-        button:hover {
-            transform: scale(1.1);
-            box-shadow: 0 0 20px cyan;
-        }
-        .message {
-            font-size: 20px;
-            font-weight: bold;
-            margin-top: 20px;
-            color: lime;
-        }
-        #next-level {
-    display: none;
-    margin-top: 20px;
-    padding: 12px 24px;
-    font-size: 1.2rem;
-    text-align: center;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-}
-        
-    </style>
-
-    </head>
+    <title>🚀 LEVEL 2 - PSEUDOCODE 🚀</title>
+    <link rel="stylesheet" href="level2.css">
+</head>
 <body>
-    <div class="quiz-container" id="quiz">
-        <h2>Correct the C Code:</h2>
-        <pre id="pseudo-code"></pre>
-        <textarea id="user-input" placeholder="Type the correct code here..."></textarea>
-        <button id="submit">Submit</button>
-        <div class="message" id="message"></div>
-        <button id="next-level" onclick="nextLevel()">Next Level</button>
-        <audio id="success-sound" src="victory.mp3"></audio>
-        <audio id="fail-sound" src="wrong.mp3"></audio>
+    <div class="navbar">
+        <span class="user-info">👤 User: <span id="username"></span></span>
+        <span class="navbar-center">🚀 LEVEL 2 - PSEUDOCODE 🚀</span>
+        <span class="score">⭐ Score: <span id="score">0</span></span>
     </div>
 
+    <div class="container">
+        <h3 class="instructions">Fix the errors in the pseudocode below.</h3>
+        <div class="progress">Pseudocode <span id="serial-number">1</span> of 5 </div>
+        <div class="attempts">Attempts left: <span id="attempts-count">3</span></div>
+        
+        <textarea id="incorrect-code" readonly></textarea>  
+        <textarea id="user-input" placeholder="Enter your corrected pseudocode here..."></textarea><br>
+
+        <button class="submit-btn" onclick="checkAnswer()">Submit</button>
+        <div class="message" id="message"></div>
+    </div>
+
+    <audio id="correctSound" src="victory.mp3"></audio>
+    <audio id="incorrectSound" src="wrong.mp3"></audio>
+
     <script>
-        const quizData = [
-            { pseudo: "#include<stdio.h>\nvoid main() {\n  print(\"Hello World!\");\n}", correct: "#include<stdio.h>\nvoid main() {\n  printf(\"Hello World!\");\n}" },
-            { pseudo: "int main() {\n  int a = 5\n  printf(\"%d\", a);\n  return 0;\n}", correct: "int main() {\n  int a = 5;\n  printf(\"%d\", a);\n  return 0;\n}" },
-            { pseudo: "#include<stdio.h>\nint main() {\n  char name[] = \"John\";\n  printf(\"Hello %s\", name);\n}", correct: "#include<stdio.h>\nint main() {\n  char name[] = \"John\";\n  printf(\"Hello %s\", name);\n  return 0;\n}" }
-        ];
+        let username = localStorage.getItem("username") || "Guest";
+        document.getElementById("username").innerText = username;
+        let level1Score = parseInt(localStorage.getItem("level1_score")) || 0;
+        let userScore = parseInt(localStorage.getItem("level2_score")) || level1Score;
+        document.getElementById("score").innerText = userScore;
 
-        function shuffleArray(array) {
-            for (let i = array.length - 1; i > 0; i--) {
-                const j = Math.floor(Math.random() * (i + 1));
-                [array[i], array[j]] = [array[j], array[i]];
-            }
-            return array;
+        let correctSound = document.getElementById("correctSound");
+        let incorrectSound = document.getElementById("incorrectSound");
+
+        let selectedPseudocodes = [];
+        let currentIndex = 0;
+        let attempts = 3;
+
+        const pseudocodes = [
+    {
+        "pseudo": "#include<stdio.h>\nvoid main() {\n  print(\"Hello\");\n}",
+        "correct": "#include<stdio.h>\nvoid main() {\n  printf(\"Hello\");\n}"
+    },
+    {
+        "pseudo": "int main() {\n  int a = 5\n  printf(\"%d\", a);\n  return 0;\n}",
+        "correct": "int main() {\n  int a = 5;\n  printf(\"%d\", a);\n  return 0;\n}"
+    },
+    {
+        "pseudo": "int main() {\n  int x = 10;\n  int y = 20\n  printf(\"%d\", x+y);\n}",
+        "correct": "int main() {\n  int x = 10;\n  int y = 20;\n  printf(\"%d\", x+y);\n  return 0;\n}"
+    },
+    {
+        "pseudo": "#include<stdio.h>\nvoid main() {\n  int num;\n  scanf(num);\n}",
+        "correct": "#include<stdio.h>\nvoid main() {\n  int num;\n  scanf(\"%d\", &num);\n}"
+    },
+    {
+        "pseudo": "void main() {\n  int a = 5;\n  if a > 0 printf(\"Positive\");\n}",
+        "correct": "void main() {\n  int a = 5;\n  if (a > 0) printf(\"Positive\");\n}"
+    },
+    {
+        "pseudo": "int main() {\n  char c = 'a\n  printf(\"%c\", c);\n}",
+        "correct": "int main() {\n  char c = 'a';\n  printf(\"%c\", c);\n  return 0;\n}"
+    },
+    {
+        "pseudo": "int main() {\n  int arr[5];\n  arr[5] = 10;\n}",
+        "correct": "int main() {\n  int arr[5];\n  arr[4] = 10;\n  return 0;\n}"
+    },
+    {
+        "pseudo": "int main() {\n  int x = 5;\n  int *ptr;\n  ptr = x;\n}",
+        "correct": "int main() {\n  int x = 5;\n  int *ptr;\n  ptr = &x;\n  return 0;\n}"
+    },
+    {
+        "pseudo": "int main() {\n  int a = 5;\n  int b = 0;\n  int c = a / b;\n  printf(\"%d\", c);\n}",
+        "correct": "int main() {\n  int a = 5;\n  int b = 0;\n  if (b != 0) {\n    int c = a / b;\n    printf(\"%d\", c);\n  } else {\n    printf(\"Division by zero error\");\n  }\n  return 0;\n}"
+    },
+    {
+        "pseudo": "int main() {\n  int num = 10;\n  for i=0; i<num; i++ {\n    printf(\"%d\", i);\n  }\n}",
+        "correct": "int main() {\n  int num = 10;\n  for (int i=0; i<num; i++) {\n    printf(\"%d\", i);\n  }\n  return 0;\n}"
+    },
+    {
+        "pseudo": "int main() {\n  char str[] = \"Hello;\n  printf(\"%s\", str);\n}",
+        "correct": "int main() {\n  char str[] = \"Hello\";\n  printf(\"%s\", str);\n  return 0;\n}"
+    },
+    {
+        "pseudo": "int main() {\n  int num;\n  printf(\"Enter a number: \");\n  gets(num);\n  printf(\"%d\", num);\n}",
+        "correct": "int main() {\n  int num;\n  printf(\"Enter a number: \");\n  scanf(\"%d\", &num);\n  printf(\"%d\", num);\n  return 0;\n}"
+    },
+    {
+        "pseudo": "int main() {\n  int x = 10;\n  printf(\"Value: %d\", x);\n  return;\n}",
+        "correct": "int main() {\n  int x = 10;\n  printf(\"Value: %d\", x);\n  return 0;\n}"
+    },
+    {
+        "pseudo": "int main() {\n  int a = 5, b = 10;\n  swap(a, b);\n  printf(\"%d %d\", a, b);\n}",
+        "correct": "int main() {\n  int a = 5, b = 10;\n  void swap(int *x, int *y) {\n    int temp = *x;\n    *x = *y;\n    *y = temp;\n  }\n  swap(&a, &b);\n  printf(\"%d %d\", a, b);\n  return 0;\n}"
+    },
+    {
+        "pseudo": "int main() {\n  int a = 10, b = 20;\n  if a > b {\n    printf(\"A is greater\");\n  } else {\n    printf(\"B is greater\");\n  }\n}",
+        "correct": "int main() {\n  int a = 10, b = 20;\n  if (a > b) {\n    printf(\"A is greater\");\n  } else {\n    printf(\"B is greater\");\n  }\n  return 0;\n}"
+    }
+];
+
+        function initializePseudocodes() {
+            let shuffled = pseudocodes.sort(() => 0.5 - Math.random());
+            selectedPseudocodes = shuffled.slice(0, 2);
+            displayPseudocode();
         }
 
-        let selectedQuestions = shuffleArray([...quizData]).slice(0, 2);
-        let currentQuiz = 0;
-        const pseudoCodeEl = document.getElementById("pseudo-code");
-        const userInput = document.getElementById("user-input");
-        const submitBtn = document.getElementById("submit");
-        const messageEl = document.getElementById("message");
-        const nextLevelBtn = document.getElementById("next-level");
-        const successSound = document.getElementById("success-sound");
-        const failSound = document.getElementById("fail-sound");
-
-        function loadQuiz() {
-            pseudoCodeEl.innerText = selectedQuestions[currentQuiz].pseudo;
-            userInput.value = "";
-            messageEl.innerText = "";
-            nextLevelBtn.style.display = "none";
+        function displayPseudocode() {
+            document.getElementById("incorrect-code").value = selectedPseudocodes[currentIndex].pseudo;
+            document.getElementById("serial-number").innerText = currentIndex + 1;
+            document.getElementById("user-input").value = "";
         }
 
-        submitBtn.addEventListener("click", () => {
-            const userAnswer = userInput.value.trim();
-            if (userAnswer === selectedQuestions[currentQuiz].correct) {
-                messageEl.innerText = "✅ Correct!";
-                successSound.play();
-                submitBtn.innerText = "Next";
-                submitBtn.onclick = nextQuestion;
+        function checkAnswer() {
+            let userInput = document.getElementById("user-input").value.trim();
+
+            if (userInput === selectedPseudocodes[currentIndex].correct) {
+                correctSound.play();
+                userScore += 2;
+                document.getElementById("score").innerText = userScore;
+                localStorage.setItem("level2_score", userScore);
+                
+                currentIndex++;
+                attempts = 3; 
+                document.getElementById("attempts-count").innerText = attempts;
+
+                if (currentIndex < 2) {
+                    displayPseudocode();
+                } else {
+                    submitScore(userScore);
+                    setTimeout(() => {
+                        window.location.href = "level3.html";
+                    }, 2000);
+                }
             } else {
-                messageEl.innerText = "❌ Incorrect! Try again.";
-                messageEl.style.color = "red";
-                failSound.play();
-            }
-        });
+                incorrectSound.play();
+                attempts--;
+                document.getElementById("attempts-count").innerText = attempts;
 
-        function nextQuestion() {
-            currentQuiz++;
-            if (currentQuiz < selectedQuestions.length) {
-                submitBtn.innerText = "Submit";
-                submitBtn.onclick = submitBtn.click;
-                loadQuiz();
-            } else {
-                messageEl.innerHTML = "🎉 Quiz Completed!";
-                submitBtn.style.display = "none";
-                nextLevelBtn.style.display = "block";
+                if (attempts === 0) {
+                    window.location.href = "concept.html";
+                }
             }
         }
 
-        function nextLevel() {
-            window.location.href = "level3.html"; // Change to your actual next level file
+        function submitScore(finalScore) {
+            const email = localStorage.getItem("email");
+            if (!email) {
+                alert("❌ Email not found! Please log in again.");
+                return;
+            }
+            
+            fetch("http://localhost:3000/submit-score", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, concept_id: 1, level2_score: finalScore })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log("✅ Server Response:", data);
+                alert("Score saved successfully!");
+            })
+            .catch(error => {
+                console.error("❌ Error submitting score:", error);
+            });
         }
 
-        loadQuiz();
+        initializePseudocodes();
     </script>
 </body>
 </html>
