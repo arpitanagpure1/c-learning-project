@@ -29,12 +29,6 @@
     <audio id="incorrectSound" src="wrong.mp3"></audio>
 
     <script>
-        let username = localStorage.getItem("username") || "Guest";
-        document.getElementById("username").innerText = username;
-        let level1Score = parseInt(localStorage.getItem("level1_score")) || 0;
-        let userScore = parseInt(localStorage.getItem("level2_score")) || level1Score;
-        document.getElementById("score").innerText = userScore;
-
         let correctSound = document.getElementById("correctSound");
         let incorrectSound = document.getElementById("incorrectSound");
 
@@ -149,28 +143,7 @@
             }
         }
 
-        function submitScore(finalScore) {
-            const email = localStorage.getItem("email");
-            if (!email) {
-                alert("❌ Email not found! Please log in again.");
-                return;
-            }
-            
-            fetch("http://localhost:3000/submit-score", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, concept_id: 1, level2_score: finalScore })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log("✅ Server Response:", data);
-                alert("Score saved successfully!");
-            })
-            .catch(error => {
-                console.error("❌ Error submitting score:", error);
-            });
-        }
-
+      
         initializePseudocodes();
     </script>
 </body>
