@@ -188,29 +188,6 @@
             }
         }
 
-        function submitScore(finalScore) {
-            const email = localStorage.getItem("email");
-            if (!email) {
-                alert("❌ Email not found! Please log in again.");
-                return;
-            }
-
-            fetch("http://localhost:3000/submit-score", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, concept_id: 1, level3_score: finalScore })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log("✅ Server Response:", data);
-                alert("Score saved successfully!");
-            })
-            .catch(error => {
-                console.error("❌ Error submitting score:", error);
-            });
-        }
-
-        displayPseudocode();
-    </script>
+            </script>
 </body>
 </html>
