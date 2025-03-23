@@ -81,27 +81,42 @@
     { "question": "Which of the following loops is best for iterating a fixed number of times?", "options": ["for", "while", "do-while", "goto"], "correct": "for" },
     { "question": "What will be the output of `while(1) printf(\"Hello\");`?", "options": ["Hello", "Infinite Hello", "No output", "Error"], "correct": "Infinite Hello" },
     { "question": "Which of the following loops is known as an entry-controlled loop?", "options": ["for", "while", "do-while", "Both for and while"], "correct": "Both for and while" }
-];let quizData = shuffleArray([...allQuestions]).slice(0, 10);
+];
+ let quizData = shuffleArray([...allQuestions]).slice(0, 10);
     let currentQuiz = 0;
     let score = 0;
 
     function startTimer() {
-        timeLeft = 30;
+    timeLeft = 30;
+    document.getElementById("timer").innerText = `Time left: ${timeLeft}s`;
+    
+    let warningSoundPlaying = false; // Track if sound is already playing
+
+    timer = setInterval(() => {
+        timeLeft--;
         document.getElementById("timer").innerText = `Time left: ${timeLeft}s`;
-        timer = setInterval(() => {
-            timeLeft--;
-            document.getElementById("timer").innerText = `Time left: ${timeLeft}s`;
-            if (timeLeft === 10) warningSound.play();
-            if (timeLeft === 0) {
-                clearInterval(timer);
-                autoSubmit();
-            }
-        }, 1000);
+
+        // Play warning sound repeatedly when time is 10s or less
+        if (timeLeft <= 10 && !warningSoundPlaying) {
+            warningSound.loop = true;  // Enable looping
+            warningSound.play();
+            warningSoundPlaying = true; // Prevent multiple plays
+        }
+
+        // Stop sound when the question changes or time reaches 0
+        if (timeLeft === 0) {
+            clearInterval(timer);
+            warningSound.pause();
+            warningSound.currentTime = 0; // Reset sound
+            autoSubmit(); 
+        }
+
+    }, 1000);
     }
 
     function autoSubmit() {
         clearInterval(timer);
-        document.getElementById("feedback").innerText = "⏳ Time up! ";
+        document.getElementById("feedback").innerText = "⏳ Time up! Moving to the next question...";
         setTimeout(() => {
             currentQuiz++;
             if (currentQuiz < quizData.length) {
@@ -161,37 +176,50 @@
     });
 
     function submitScore(finalScore) {
-        const email = localStorage.getItem("email"); 
-        if (!email) {
-            alert("❌ Email not found! Please log in again.");
-            return;
-        }
-        
-        fetch("http://localhost:3000/submit-score", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ email, concept_id: 5, level1_score: finalScore }),
-        })
-        .then(response => response.json())
-        .then(data => {
-            console.log("✅ Server Response:", data);
-            alert("Score saved successfully!");
-        })
-        .catch(error => {
-            console.error("❌ Error submitting score:", error);
-        });
+    const email = localStorage.getItem("email"); 
+    if (!email) {
+        alert("❌ Email not found! Please log in again.");
+        return;
     }
 
-    function endQuiz() {
-        submitScore(score);
-        document.getElementById("quiz").innerHTML = `<h2>🎉 Your Score: ${score}/10</h2>`;
-        setTimeout(() => {
-            window.location.href = score < 8 ? "concept.html" : "level2.html";
-        }, 3000);
-    }
+    // Store Level 1 score in localStorage for Level 2
+    localStorage.setItem("totalScore", finalScore); // Store total score for Level 2
+
+    fetch("http://localhost:3000/submit-score", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, concept_id: 5, level1_score: finalScore }),
+    })
+    .then(response => response.json())
+    .then(data => {
+        console.log("✅ Server Response:", data);
+        alert("Score saved successfully!");
+    })
+    .catch(error => {
+        console.error("❌ Error submitting score:", error);
+    });
+}
+   function endQuiz() {
+    // Store Level 1 score in localStorage
+    localStorage.setItem("level1_score", score);
+
+    // Submit score to the server
+    submitScore(score);
+
+    // Display final score
+    document.getElementById("quiz").innerHTML = `<h2>🎉 Your Score: ${score}/10</h2>`;
+
+    // Redirect based on score
+    setTimeout(() => {
+        if (score < 8) {
+            window.location.href = "start.html";  // If score is 0, redirect to concept page
+        } else {
+            window.location.href = "loops2.html";  // Otherwise, go to Level 2
+        }
+    }, 3000);
+}
 
     loadQuiz();
 </script>
 </body>
 </html>
-
