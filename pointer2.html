@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 LEVEL 2 - PSEUDOCODE 🚀</title>
+    <link rel="stylesheet" href="level2.css">
+</head>
+<body>
+    <div class="navbar">
+        <span class="user-info">👤 User: <span id="username"></span></span>
+        <span class="navbar-center">🚀 LEVEL 2 - PSEUDOCODE 🚀</span>
+        <span class="score">⭐ Score: <span id="score">0</span></span>
+    </div>
+
+    <div class="container">
+        <h3 class="instructions">Fix the errors in the pseudocode below.</h3>
+        <div class="progress">Pseudocode <span id="serial-number">1</span> of 5 </div>
+        <div class="attempts">Attempts left: <span id="attempts-count">3</span></div>
+        
+        <textarea id="incorrect-code" readonly></textarea>  
+        <textarea id="user-input" placeholder="Enter your corrected pseudocode here..."></textarea><br>
+
+        <button class="submit-btn" onclick="checkAnswer()">Submit</button>
+        <div class="message" id="message"></div>
+    </div>
+
+    <audio id="correctSound" src="victory.mp3"></audio>
+    <audio id="incorrectSound" src="wrong.mp3"></audio>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            let totalScore = parseInt(localStorage.getItem("totalScore")) || 0;  
+            document.getElementById("score").innerText = totalScore; 
+
+            let currentScore = totalScore; 
+
+            function updateScore(points) {
+                currentScore += points; 
+                document.getElementById("score").innerText = currentScore;
+                localStorage.setItem("totalScore", currentScore); 
+            }
+
+            let username = localStorage.getItem("username") || "Guest";
+            document.getElementById("username").innerText = username;
+
+            let level1Score = parseInt(localStorage.getItem("level1_score")) || 0;
+            let level2Score = totalScore; 
+
+            let userScore = level2Score; 
+            let correctSound = document.getElementById("correctSound");
+            let incorrectSound = document.getElementById("incorrectSound");
+
+            let selectedPseudocodes = [];
+            let currentIndex = 0;
+            let attempts = 3;
+            const pseudocodes = [
+    {
+        "pseudo": "int main() {\n  int *ptr;\n  *ptr = 10;\n  printf(\"%d\", *ptr);\n}",
+        "correct": "int main() {\n  int x;\n  int *ptr = &x;\n  *ptr = 10;\n  printf(\"%d\", *ptr);\n  return 0;\n}"
+    },
+    {
+        "pseudo": "int main() {\n  int *ptr = NULL;\n  printf(\"%d\", *ptr);\n}",
+        "correct": "int main() {\n  int *ptr = NULL;\n  if (ptr != NULL) printf(\"%d\", *ptr);\n  return 0;\n}"
+    },
+    {
+        "pseudo": "int main() {\n  int arr[3] = {1,2,3};\n  int *ptr = arr;\n  printf(\"%d\", ptr[3]);\n}",
+        "correct": "int main() {\n  int arr[3] = {1,2,3};\n  int *ptr = arr;\n  printf(\"%d\", ptr[2]);\n  return 0;\n}"
+    },
+    {
+        "pseudo": "void update(int *x) {\n  x = 10;\n}\nint main() {\n  int a = 5;\n  update(&a);\n  printf(\"%d\", a);\n}",
+        "correct": "void update(int *x) {\n  *x = 10;\n}\nint main() {\n  int a = 5;\n  update(&a);\n  printf(\"%d\", a);\n  return 0;\n}"
+    },
+    {
+        "pseudo": "int main() {\n  int x = 5;\n  void *ptr = &x;\n  printf(\"%d\", *ptr);\n}",
+        "correct": "int main() {\n  int x = 5;\n  void ptr = &x;\n  printf(\"%d\", *(int)ptr);\n  return 0;\n}"
+    },
+    {
+        "pseudo": "int main() {\n  int a = 5;\n  int *ptr;\n  printf(\"%d\", *ptr);\n}",
+        "correct": "int main() {\n  int a = 5;\n  int *ptr = &a;\n  printf(\"%d\", *ptr);\n  return 0;\n}"
+    },
+    {
+        "pseudo": "void main() {\n  int *ptr;\n  printf(\"%p\", ptr);\n}",
+        "correct": "int main() {\n  int *ptr = NULL;\n  printf(\"%p\", ptr);\n  return 0;\n}"
+    },
+    {
+        "pseudo": "int main() {\n  int x = 10;\n  int *ptr = x;\n  printf(\"%d\", *ptr);\n}",
+        "correct": "int main() {\n  int x = 10;\n  int *ptr = &x;\n  printf(\"%d\", *ptr);\n  return 0;\n}"
+    },
+    {
+        "pseudo": "int main() {\n  int *ptr;\n  free(ptr);\n}",
+        "correct": "int main() {\n  int ptr = (int)malloc(sizeof(int));\n  free(ptr);\n  return 0;\n}"
+    },
+    {
+        "pseudo": "void allocate(int p) {\n  p = (int)malloc(sizeof(int));\n  *p = 10;\n}\nint main() {\n  int *ptr;\n  allocate(ptr);\n  printf(\"%d\", *ptr);\n}",
+        "correct": "void allocate(int *p) {\n  *p = (int)malloc(sizeof(int));\n  **p = 10;\n}\nint main() {\n  int *ptr;\n  allocate(&ptr);\n  printf(\"%d\", *ptr);\n  free(ptr);\n  return 0;\n}"
+    },
+    {
+        "pseudo": "int main() {\n  int arr[5] = {1,2,3,4,5};\n  int *ptr = arr;\n  printf(\"%d\", *(ptr+6));\n}",
+        "correct": "int main() {\n  int arr[5] = {1,2,3,4,5};\n  int *ptr = arr;\n  printf(\"%d\", *(ptr+4));\n  return 0;\n}"
+    },
+    {
+        "pseudo": "int main() {\n  char *str = \"Hello\";\n  str[0] = 'h';\n  printf(\"%s\", str);\n}",
+        "correct": "int main() {\n  char str[] = \"Hello\";\n  str[0] = 'h';\n  printf(\"%s\", str);\n  return 0;\n}"
+    },
+    {
+        "pseudo": "int main() {\n  int ptr = (int)malloc(5);\n  ptr[0] = 10;\n}",
+        "correct": "int main() {\n  int ptr = (int)malloc(5 * sizeof(int));\n  ptr[0] = 10;\n  free(ptr);\n  return 0;\n}"
+    },
+    {
+        "pseudo": "int main() {\n  int a = 5;\n  int *p1 = &a, *p2;\n  p2 = p1;\n  *p2 = 10;\n  printf(\"%d\", a);\n}",
+        "correct": "int main() {\n  int a = 5;\n  int *p1 = &a, *p2;\n  p2 = p1;\n  *p2 = 10;\n  printf(\"%d\", a);\n  return 0;\n}"
+    },
+    {
+        "pseudo": "int main() {\n  int a = 10;\n  int *ptr;\n  ptr = &a;\n  printf(\"%p\", ptr);\n}",
+        "correct": "int main() {\n  int a = 10;\n  int ptr;\n  ptr = &a;\n  printf(\"%p\", (void)ptr);\n  return 0;\n}"
+    },
+    {
+        "pseudo": "int main() {\n  int ptr = (int)malloc(sizeof(int));\n  printf(\"%d\", *ptr);\n  free(ptr);\n}",
+        "correct": "int main() {\n  int ptr = (int)malloc(sizeof(int));\n  *ptr = 0;\n  printf(\"%d\", *ptr);\n  free(ptr);\n  return 0;\n}"
+    },
+    {
+        "pseudo": "int main() {\n  int x = 10;\n  int *ptr;\n  ptr = x;\n  printf(\"%d\", *ptr);\n}",
+        "correct": "int main() {\n  int x = 10;\n  int *ptr;\n  ptr = &x;\n  printf(\"%d\", *ptr);\n  return 0;\n}"
+    },
+    {
+        "pseudo": "int main() {\n  int ptr1, *ptr2;\n  ptr1 = (int)malloc(sizeof(int));\n  *ptr1 = 10;\n  ptr2 = ptr1;\n  free(ptr1);\n  printf(\"%d\", *ptr2);\n}",
+        "correct": "int main() {\n  int ptr1, *ptr2;\n  ptr1 = (int)malloc(sizeof(int));\n  *ptr1 = 10;\n  ptr2 = ptr1;\n  printf(\"%d\", *ptr2);\n  free(ptr1);\n  return 0;\n}"
+    }
+ {
+        "pseudo": "int main() {\n  int a = 5;\n  int *p;\n  *p = a;\n  printf(\"%d\", *p);\n}",
+        "correct": "int main() {\n  int a = 5;\n  int *p = &a;\n  printf(\"%d\", *p);\n  return 0;\n}"
+    },
+    {
+        "pseudo": "int main() {\n  int *p1, *p2;\n  int x = 10;\n  p1 = &x;\n  p2 = p1;\n  printf(\"%d\", *p1 + *p2);\n}",
+        "correct": "int main() {\n  int *p1, *p2;\n  int x = 10;\n  p1 = &x;\n  p2 = p1;\n  printf(\"%d\", *p1 + *p2);\n  return 0;\n}"
+    },
+    {
+        "pseudo": "int main() {\n  int arr[3] = {10,20,30};\n  int *p = arr;\n  printf(\"%d\", *(p+4));\n}",
+        "correct": "int main() {\n  int arr[3] = {10,20,30};\n  int *p = arr;\n  printf(\"%d\", *(p+2));\n  return 0;\n}"
+    },
+    {
+        "pseudo": "void swap(int *a, int *b) {\n  int *temp;\n  temp = a;\n  a = b;\n  b = temp;\n}\nint main() {\n  int x = 5, y = 10;\n  swap(&x, &y);\n  printf(\"%d %d\", x, y);\n}",
+        "correct": "void swap(int *a, int *b) {\n  int temp;\n  temp = *a;\n  *a = *b;\n  *b = temp;\n}\nint main() {\n  int x = 5, y = 10;\n  swap(&x, &y);\n  printf(\"%d %d\", x, y);\n  return 0;\n}"
+    },
+    {
+        "pseudo": "int main() {\n  int *ptr;\n  *ptr = malloc(sizeof(int));\n  *ptr = 20;\n  printf(\"%d\", *ptr);\n}",
+        "correct": "int main() {\n  int *ptr = (int*)malloc(sizeof(int));\n  *ptr = 20;\n  printf(\"%d\", *ptr);\n  free(ptr);\n  return 0;\n}"
+    },
+    {
+        "pseudo": "int main() {\n  int *ptr = NULL;\n  *ptr = 50;\n  printf(\"%d\", *ptr);\n}",
+        "correct": "int main() {\n  int x = 50;\n  int *ptr = &x;\n  printf(\"%d\", *ptr);\n  return 0;\n}"
+    },
+    {
+        "pseudo": "int main() {\n  int x = 10;\n  int *ptr1 = &x;\n  int **ptr2 = ptr1;\n  printf(\"%d\", **ptr2);\n}",
+        "correct": "int main() {\n  int x = 10;\n  int *ptr1 = &x;\n  int **ptr2 = &ptr1;\n  printf(\"%d\", **ptr2);\n  return 0;\n}"
+    },
+    {
+        "pseudo": "int main() {\n  int a = 5;\n  int *p = &a;\n  free(p);\n  printf(\"%d\", *p);\n}",
+        "correct": "int main() {\n  int *p = (int*)malloc(sizeof(int));\n  *p = 5;\n  printf(\"%d\", *p);\n  free(p);\n  return 0;\n}"
+    },
+    {
+        "pseudo": "int main() {\n  int x = 5;\n  int *ptr = &x;\n  ptr++;\n  printf(\"%d\", *ptr);\n}",
+        "correct": "int main() {\n  int x = 5;\n  int *ptr = &x;\n  printf(\"%d\", *ptr);\n  return 0;\n}"
+    },
+    {
+        "pseudo": "int main() {\n  int x = 10;\n  int y = 20;\n  int *p1 = &x, *p2 = &y;\n  printf(\"%d\", *p1 + *p2);\n}",
+        "correct": "int main() {\n  int x = 10;\n  int y = 20;\n  int *p1 = &x, *p2 = &y;\n  printf(\"%d\", *p1 + *p2);\n  return 0;\n}"
+    }
+];
+
+            function initializePseudocodes() {
+                let shuffled = pseudocodes.sort(() => 0.5 - Math.random());
+                selectedPseudocodes = shuffled.slice(0, 5);
+                displayPseudocode();
+            }
+
+            function displayPseudocode() {
+                document.getElementById("incorrect-code").value = selectedPseudocodes[currentIndex].pseudo;
+                document.getElementById("serial-number").innerText = currentIndex + 1;
+                document.getElementById("user-input").value = "";
+            }
+
+            window.checkAnswer = function () {
+                let userInput = document.getElementById("user-input").value.trim();
+
+                if (userInput === selectedPseudocodes[currentIndex].correct) {
+                    correctSound.play();
+                    updateScore(2);
+                    currentIndex++;
+                    attempts = 3; 
+                    document.getElementById("attempts-count").innerText = attempts;
+
+                    if (currentIndex < 5) {
+                        displayPseudocode();
+                    } else {
+                        submitScore(currentScore);
+                        setTimeout(() => {
+                            window.location.href = "level3.html";
+                        }, 2000);
+                    }
+                } else {
+                    incorrectSound.play();
+                    attempts--;
+                    document.getElementById("attempts-count").innerText = attempts;
+
+                    if (attempts === 0) {
+                        window.location.href = "concept.html";
+                    }
+                }
+            }
+
+            function submitScore(finalScore) {
+                const email = localStorage.getItem("email");
+                if (!email) {
+                    alert("❌ Email not found! Please log in again.");
+                    return;
+                }
+                
+                fetch("http://localhost:3000/submit-score", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email, concept_id: 8, level2_score: finalScore })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("✅ Server Response:", data);
+                    alert("Score saved successfully!");
+                })
+                .catch(error => {
+                    console.error("❌ Error submitting score:", error);
+                });
+            }
+
+            initializePseudocodes();
+        });
+    </script>
+</body>
+</html>

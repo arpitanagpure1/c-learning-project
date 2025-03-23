@@ -29,32 +29,33 @@
     <audio id="incorrectSound" src="wrong.mp3"></audio>
 
     <script>
-         let username = localStorage.getItem("username") || "Guest";
-document.getElementById("username").innerText = username;
+        document.addEventListener("DOMContentLoaded", () => {
+            let totalScore = parseInt(localStorage.getItem("totalScore")) || 0;  
+            document.getElementById("score").innerText = totalScore; // Show total score
 
+            let currentScore = totalScore; // Start Level 2 with previous score
 
-// Get Level 1 Score
-let level1Score = parseInt(localStorage.getItem("level1_score")) || 0;
+            function updateScore(points) {
+                currentScore += points; // Increase score
+                document.getElementById("score").innerText = currentScore;
+                localStorage.setItem("totalScore", currentScore); // Update stored score
+            }
 
-// Ensure Level 2 starts from Level 1 score (only if it's not already set)
-let level2Score = parseInt(localStorage.getItem("level2_score")) || level1Score;
-localStorage.setItem("level2_score", level2Score); 
+            let username = localStorage.getItem("username") || "Guest";
+            document.getElementById("username").innerText = username;
 
-// Update Score Display
-document.getElementById("score").innerText = level2Score;
+            let level1Score = parseInt(localStorage.getItem("level1_score")) || 0;
+            let level2Score = totalScore; 
 
+            let userScore = level2Score; 
+            let correctSound = document.getElementById("correctSound");
+            let incorrectSound = document.getElementById("incorrectSound");
 
+            let selectedPseudocodes = [];
+            let currentIndex = 0;
+            let attempts = 3;
 
-
-
-        let correctSound = document.getElementById("correctSound");
-        let incorrectSound = document.getElementById("incorrectSound");
-
-        let selectedPseudocodes = [];
-        let currentIndex = 0;
-        let attempts = 3;
-
-        const pseudocodes = [
+            const pseudocodes = [
     {
         "pseudo": "#include<stdio.h>\nvoid main() {\n  print(\"Hello\");\n}",
         "correct": "#include<stdio.h>\nvoid main() {\n  printf(\"Hello\");\n}"
@@ -64,127 +65,197 @@ document.getElementById("score").innerText = level2Score;
         "correct": "int main() {\n  int a = 5;\n  printf(\"%d\", a);\n  return 0;\n}"
     },
     {
-        "pseudo": "int main() {\n  int x = 10;\n  int y = 20\n  printf(\"%d\", x+y);\n}",
-        "correct": "int main() {\n  int x = 10;\n  int y = 20;\n  printf(\"%d\", x+y);\n  return 0;\n}"
+        "pseudo": "#include<stdio.h>\nvoid main() {\n  int a = 10;\n  print(\"%d\", a);\n}",
+        "correct": "#include<stdio.h>\nvoid main() {\n  int a = 10;\n  printf(\"%d\", a);\n}"
     },
     {
-        "pseudo": "#include<stdio.h>\nvoid main() {\n  int num;\n  scanf(num);\n}",
-        "correct": "#include<stdio.h>\nvoid main() {\n  int num;\n  scanf(\"%d\", &num);\n}"
+        "pseudo": "#include<stdio.h>\nvoid main() {\n  char name = \"C\";\n  printf(\"%c\", name);\n}",
+        "correct": "#include<stdio.h>\nvoid main() {\n  char name = 'C';\n  printf(\"%c\", name);\n}"
     },
     {
-        "pseudo": "void main() {\n  int a = 5;\n  if a > 0 printf(\"Positive\");\n}",
-        "correct": "void main() {\n  int a = 5;\n  if (a > 0) printf(\"Positive\");\n}"
+        "pseudo": "#include<stdio.h>\nvoid main() {\n  int a = 5;\n  printf(a);\n}",
+        "correct": "#include<stdio.h>\nvoid main() {\n  int a = 5;\n  printf(\"%d\", a);\n}"
     },
     {
-        "pseudo": "int main() {\n  char c = 'a\n  printf(\"%c\", c);\n}",
-        "correct": "int main() {\n  char c = 'a';\n  printf(\"%c\", c);\n  return 0;\n}"
+        "pseudo": "#include<stdio.h>\nvoid main() {\n  int a;\n  scanf(\"%f\", &a);\n}",
+        "correct": "#include<stdio.h>\nvoid main() {\n  int a;\n  scanf(\"%d\", &a);\n}"
     },
     {
-        "pseudo": "int main() {\n  int arr[5];\n  arr[5] = 10;\n}",
-        "correct": "int main() {\n  int arr[5];\n  arr[4] = 10;\n  return 0;\n}"
+        "pseudo": "#include<stdio.h>\nvoid main() {\n  printf(\"%s\", 'Hello');\n}",
+        "correct": "#include<stdio.h>\nvoid main() {\n  printf(\"%s\", \"Hello\");\n}"
     },
     {
-        "pseudo": "int main() {\n  int x = 5;\n  int *ptr;\n  ptr = x;\n}",
-        "correct": "int main() {\n  int x = 5;\n  int *ptr;\n  ptr = &x;\n  return 0;\n}"
+        "pseudo": "#include<stdio.h>\nvoid main() {\n  int x = 5;\n  int y = 0;\n  printf(\"%d\", x/y);\n}",
+        "correct": "#include<stdio.h>\nvoid main() {\n  int x = 5;\n  int y = 1;\n  printf(\"%d\", x/y);\n}"
     },
     {
-        "pseudo": "int main() {\n  int a = 5;\n  int b = 0;\n  int c = a / b;\n  printf(\"%d\", c);\n}",
-        "correct": "int main() {\n  int a = 5;\n  int b = 0;\n  if (b != 0) {\n    int c = a / b;\n    printf(\"%d\", c);\n  } else {\n    printf(\"Division by zero error\");\n  }\n  return 0;\n}"
+        "pseudo": "#include<stdio.h>\nvoid main() {\n  char ch = 'A';\n  printf(\"Character: %d\", ch);\n}",
+        "correct": "#include<stdio.h>\nvoid main() {\n  char ch = 'A';\n  printf(\"Character: %c\", ch);\n}"
     },
     {
-        "pseudo": "int main() {\n  int num = 10;\n  for i=0; i<num; i++ {\n    printf(\"%d\", i);\n  }\n}",
-        "correct": "int main() {\n  int num = 10;\n  for (int i=0; i<num; i++) {\n    printf(\"%d\", i);\n  }\n  return 0;\n}"
+        "pseudo": "#include<stdio.h>\nvoid main() {\n  int arr[3] = {1, 2, 3};\n  printf(\"%d\", arr[3]);\n}",
+        "correct": "#include<stdio.h>\nvoid main() {\n  int arr[3] = {1, 2, 3};\n  printf(\"%d\", arr[2]);\n}"
     },
     {
-        "pseudo": "int main() {\n  char str[] = \"Hello;\n  printf(\"%s\", str);\n}",
-        "correct": "int main() {\n  char str[] = \"Hello\";\n  printf(\"%s\", str);\n  return 0;\n}"
+        "pseudo": "#include<stdio.h>\nvoid main() {\n  int i;\n  for(i = 0; i < 5; i++) {\n    print(\"%d\", i);\n  }\n}",
+        "correct": "#include<stdio.h>\nvoid main() {\n  int i;\n  for(i = 0; i < 5; i++) {\n    printf(\"%d\", i);\n  }\n}"
     },
     {
-        "pseudo": "int main() {\n  int num;\n  printf(\"Enter a number: \");\n  gets(num);\n  printf(\"%d\", num);\n}",
-        "correct": "int main() {\n  int num;\n  printf(\"Enter a number: \");\n  scanf(\"%d\", &num);\n  printf(\"%d\", num);\n  return 0;\n}"
+        "pseudo": "#include<stdio.h>\nvoid main() {\n  int x = 5;\n  int y = 2;\n  printf(\"%d\", x/y);\n}",
+        "correct": "#include<stdio.h>\nvoid main() {\n  int x = 5;\n  int y = 2;\n  printf(\"%.2f\", (float)x/y);\n}"
     },
     {
-        "pseudo": "int main() {\n  int x = 10;\n  printf(\"Value: %d\", x);\n  return;\n}",
-        "correct": "int main() {\n  int x = 10;\n  printf(\"Value: %d\", x);\n  return 0;\n}"
+        "pseudo": "#include<stdio.h>\nvoid main() {\n  int *ptr;\n  printf(\"%d\", *ptr);\n}",
+        "correct": "#include<stdio.h>\nvoid main() {\n  int a = 5;\n  int *ptr = &a;\n  printf(\"%d\", *ptr);\n}"
     },
     {
-        "pseudo": "int main() {\n  int a = 5, b = 10;\n  swap(a, b);\n  printf(\"%d %d\", a, b);\n}",
-        "correct": "int main() {\n  int a = 5, b = 10;\n  void swap(int *x, int *y) {\n    int temp = *x;\n    *x = *y;\n    *y = temp;\n  }\n  swap(&a, &b);\n  printf(\"%d %d\", a, b);\n  return 0;\n}"
+        "pseudo": "#include<stdio.h>\nvoid main() {\n  int num = 10;\n  num++;\n  printf(\"%d\", num);\n  num--;\n}",
+        "correct": "#include<stdio.h>\nvoid main() {\n  int num = 10;\n  num++;\n  printf(\"%d\", num);\n  num--;\n  printf(\"%d\", num);\n}"
     },
     {
-        "pseudo": "int main() {\n  int a = 10, b = 20;\n  if a > b {\n    printf(\"A is greater\");\n  } else {\n    printf(\"B is greater\");\n  }\n}",
-        "correct": "int main() {\n  int a = 10, b = 20;\n  if (a > b) {\n    printf(\"A is greater\");\n  } else {\n    printf(\"B is greater\");\n  }\n  return 0;\n}"
+        "pseudo": "#include<stdio.h>\nvoid main() {\n  int a = 10;\n  int b = 5;\n  if(a < b);\n    printf(\"A is smaller\");\n}",
+        "correct": "#include<stdio.h>\nvoid main() {\n  int a = 10;\n  int b = 5;\n  if(a < b)\n    printf(\"A is smaller\");\n}"
+    },
+    {
+        "pseudo": "#include<stdio.h>\nvoid main() {\n  int x = 3;\n  printf(\"Square: %d\", x*x;\n}",
+        "correct": "#include<stdio.h>\nvoid main() {\n  int x = 3;\n  printf(\"Square: %d\", x*x);\n}"
+    },
+    {
+        "pseudo": "#include<stdio.h>\nvoid main() {\n  int num = 5;\n  printf(\"Factorial: %d\", fact(num));\n}",
+        "correct": "#include<stdio.h>\n#include<math.h>\nvoid main() {\n  int num = 5;\n  printf(\"Factorial: %d\", tgamma(num+1));\n}"
+    },
+    {
+        "pseudo": "#include<stdio.h>\nvoid main() {\n  int x = 10, y = 20;\n  swap(x, y);\n  printf(\"%d %d\", x, y);\n}",
+        "correct": "#include<stdio.h>\nvoid swap(int *a, int *b) {\n  int temp = *a;\n  *a = *b;\n  *b = temp;\n}\nvoid main() {\n  int x = 10, y = 20;\n  swap(&x, &y);\n  printf(\"%d %d\", x, y);\n}"
+    },
+    {
+        "pseudo": "#include<stdio.h>\nvoid main() {\n  int x = 10;\n  printf(\"Value: \" x);\n}",
+        "correct": "#include<stdio.h>\nvoid main() {\n  int x = 10;\n  printf(\"Value: %d\", x);\n}"
+    },
+    {
+        "pseudo": "#include<stdio.h>\nvoid main() {\n  FILE *f = fopen(\"data.txt\", \"w\");\n  fprint(f, \"Hello\");\n  fclose(f);\n}",
+        "correct": "#include<stdio.h>\nvoid main() {\n  FILE *f = fopen(\"data.txt\", \"w\");\n  fprintf(f, \"Hello\");\n  fclose(f);\n}"
+    },
+    {
+        "pseudo": "#include<stdio.h>\nvoid main() {\n  FILE *f = fopen(\"data.txt\", \"w\");\n  fclose();\n}",
+        "correct": "#include<stdio.h>\nvoid main() {\n  FILE *f = fopen(\"data.txt\", \"w\");\n  fclose(f);\n}"
+    },
+    {
+        "pseudo": "#include<stdio.h>\nvoid main() {\n  FILE *f;\n  f = fopen(\"file.txt\", \"r\");\n  char str[50];\n  gets(str);\n  fclose(f);\n}",
+        "correct": "#include<stdio.h>\nvoid main() {\n  FILE *f;\n  f = fopen(\"file.txt\", \"r\");\n  char str[50];\n  fgets(str, 50, f);\n  fclose(f);\n}"
+    },
+    {
+        "pseudo": "#include<stdio.h>\nvoid main() {\n  FILE *f = fopen(\"test.txt\", \"r\");\n  if(f = NULL) {\n    printf(\"Error\");\n  }\n}",
+        "correct": "#include<stdio.h>\nvoid main() {\n  FILE *f = fopen(\"test.txt\", \"r\");\n  if(f == NULL) {\n    printf(\"Error\");\n  }\n}"
+    },
+    {
+        "pseudo": "#include<stdio.h>\nvoid main() {\n  FILE *f = fopen(\"data.txt\", \"w\");\n  fputc(\"A\", f);\n  fclose(f);\n}",
+        "correct": "#include<stdio.h>\nvoid main() {\n  FILE *f = fopen(\"data.txt\", \"w\");\n  fputc('A', f);\n  fclose(f);\n}"
+    },
+    {
+        "pseudo": "#include<stdio.h>\nvoid main() {\n  FILE *f = fopen(\"test.txt\", \"w\");\n  fputs('Hello', f);\n  fclose(f);\n}",
+        "correct": "#include<stdio.h>\nvoid main() {\n  FILE *f = fopen(\"test.txt\", \"w\");\n  fputs(\"Hello\", f);\n  fclose(f);\n}"
+    },
+    {
+        "pseudo": "#include<stdio.h>\nvoid main() {\n  FILE *f = fopen(\"test.txt\", \"w\");\n  fwrite(\"Hello\", 5, 1, f);\n  fclose(f);\n}",
+        "correct": "#include<stdio.h>\nvoid main() {\n  FILE *f = fopen(\"test.txt\", \"w\");\n  fwrite(\"Hello\", sizeof(char), 5, f);\n  fclose(f);\n}"
+    },
+    {
+        "pseudo": "#include<stdio.h>\nvoid main() {\n  FILE *f;\n  f = fopen(\"file.txt\", \"r\");\n  fscanf(f, \"%s\", str);\n  fclose(f);\n}",
+        "correct": "#include<stdio.h>\nvoid main() {\n  FILE *f;\n  char str[50];\n  f = fopen(\"file.txt\", \"r\");\n  fscanf(f, \"%s\", str);\n  fclose(f);\n}"
+    },
+    {
+        "pseudo": "#include<stdio.h>\nvoid main() {\n  FILE *f = fopen(\"data.txt\", \"a\");\n  fwrite(\"Data\", 1, 4, f);\n  fclose(f);\n}",
+        "correct": "#include<stdio.h>\nvoid main() {\n  FILE *f = fopen(\"data.txt\", \"a\");\n  fwrite(\"Data\", sizeof(char), 4, f);\n  fclose(f);\n}"
+    },
+    {
+        "pseudo": "#include<stdio.h>\nvoid main() {\n  FILE *f = fopen(\"data.txt\", \"w\");\n  fprintf(\"%s\", \"Hello\");\n  fclose(f);\n}",
+        "correct": "#include<stdio.h>\nvoid main() {\n  FILE *f = fopen(\"data.txt\", \"w\");\n  fprintf(f, \"%s\", \"Hello\");\n  fclose(f);\n}"
+    },
+    {
+        "pseudo": "#include<stdio.h>\nvoid main() {\n  FILE *f;\n  fopen(\"file.txt\", \"r\");\n  char str[50];\n  fgets(str, 50, f);\n  fclose(f);\n}",
+        "correct": "#include<stdio.h>\nvoid main() {\n  FILE *f;\n  f = fopen(\"file.txt\", \"r\");\n  char str[50];\n  fgets(str, 50, f);\n  fclose(f);\n}"
+    },
+    {
+        "pseudo": "#include<stdio.h>\nvoid main() {\n  FILE *f = fopen(\"data.txt\", \"r\");\n  char ch;\n  while(ch != EOF) {\n    ch = fgetc(f);\n    printf(\"%c\", ch);\n  }\n  fclose(f);\n}",
+        "correct": "#include<stdio.h>\nvoid main() {\n  FILE *f = fopen(\"data.txt\", \"r\");\n  char ch;\n  while((ch = fgetc(f)) != EOF) {\n    printf(\"%c\", ch);\n  }\n  fclose(f);\n}"
+    },
+    {
+        "pseudo": "#include<stdio.h>\nvoid main() {\n  FILE *f = fopen(\"data.txt\", \"w\");\n  fwrite(\"Data\", 4, 1, f);\n  fclose();\n}",
+        "correct": "#include<stdio.h>\nvoid main() {\n  FILE *f = fopen(\"data.txt\", \"w\");\n  fwrite(\"Data\", 4, 1, f);\n  fclose(f);\n}"
+    },
+    {
+        "pseudo": "#include<stdio.h>\nvoid main() {\n  FILE *f = fopen(\"file.txt\", \"r\");\n  int num;\n  fscanf(f, \"%s\", num);\n  fclose(f);\n}",
+        "correct": "#include<stdio.h>\nvoid main() {\n  FILE *f = fopen(\"file.txt\", \"r\");\n  int num;\n  fscanf(f, \"%d\", &num);\n  fclose(f);\n}"
     }
+
 ];
 
-        function initializePseudocodes() {
-            let shuffled = pseudocodes.sort(() => 0.5 - Math.random());
-            selectedPseudocodes = shuffled.slice(0, 2);
-            displayPseudocode();
-        }
+            function initializePseudocodes() {
+                let shuffled = pseudocodes.sort(() => 0.5 - Math.random());
+                selectedPseudocodes = shuffled.slice(0, 2);
+                displayPseudocode();
+            }
 
-        function displayPseudocode() {
-            document.getElementById("incorrect-code").value = selectedPseudocodes[currentIndex].pseudo;
-            document.getElementById("serial-number").innerText = currentIndex + 1;
-            document.getElementById("user-input").value = "";
-        }
+            function displayPseudocode() {
+                document.getElementById("incorrect-code").value = selectedPseudocodes[currentIndex].pseudo;
+                document.getElementById("serial-number").innerText = currentIndex + 1;
+                document.getElementById("user-input").value = "";
+            }
 
-        function checkAnswer() {
-            let userInput = document.getElementById("user-input").value.trim();
+            window.checkAnswer = function () {
+                let userInput = document.getElementById("user-input").value.trim();
 
-            if (userInput === selectedPseudocodes[currentIndex].correct) {
-                correctSound.play();
-                userScore += 2;
-                document.getElementById("score").innerText = userScore;
-                localStorage.setItem("level2_score", userScore);
-                
-                currentIndex++;
-                attempts = 3; 
-                document.getElementById("attempts-count").innerText = attempts;
+                if (userInput === selectedPseudocodes[currentIndex].correct) {
+                    correctSound.play();
+                    updateScore(2);
+                    currentIndex++;
+                    attempts = 3; 
+                    document.getElementById("attempts-count").innerText = attempts;
 
-                if (currentIndex < 2) {
-                    displayPseudocode();
+                    if (currentIndex < 2) {
+                        displayPseudocode();
+                    } else {
+                        submitScore(currentScore);
+                        setTimeout(() => {
+                            window.location.href = "level3.html";
+                        }, 2000);
+                    }
                 } else {
-                    submitScore(userScore);
-                    setTimeout(() => {
-                        window.location.href = "level3.html";
-                    }, 2000);
-                }
-            } else {
-                incorrectSound.play();
-                attempts--;
-                document.getElementById("attempts-count").innerText = attempts;
+                    incorrectSound.play();
+                    attempts--;
+                    document.getElementById("attempts-count").innerText = attempts;
 
-                if (attempts === 0) {
-                    window.location.href = "concept.html";
+                    if (attempts === 0) {
+                        window.location.href = "concept.html";
+                    }
                 }
             }
-        }
-        function submitScore(finalScore) {
-            const email = localStorage.getItem("email");
-            if (!email) {
-                alert("❌ Email not found! Please log in again.");
-                return;
+
+            function submitScore(finalScore) {
+                const email = localStorage.getItem("email");
+                if (!email) {
+                    alert("❌ Email not found! Please log in again.");
+                    return;
+                }
+                
+                fetch("http://localhost:3000/submit-score", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ email, concept_id: 1, level2_score: finalScore })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("✅ Server Response:", data);
+                    alert("Score saved successfully!");
+                })
+                .catch(error => {
+                    console.error("❌ Error submitting score:", error);
+                });
             }
-            
-            fetch("http://localhost:3000/submit-score", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email, concept_id: 1, level2_score: finalScore })
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log("✅ Server Response:", data);
-                alert("Score saved successfully!");
-            })
-            .catch(error => {
-                console.error("❌ Error submitting score:", error);
-            });
-        }
 
-
-      
-        initializePseudocodes();
+            initializePseudocodes();
+        });
     </script>
 </body>
 </html>
