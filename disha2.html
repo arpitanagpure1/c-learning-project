@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login Page</title>
+    <style>
+ body {
+    font-family: sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    margin: 0;
+    background-color: #9be6e5;
+}
+.container {
+    display: flex;
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+.left {
+    width: 60%;
+    padding: 10px;
+}
+.right {
+    width: 60%;
+    padding: 20px;
+    background: linear-gradient(to right, #74ebd5, #acacac);
+    color: #fff;
+    align-content: center;
+    justify-content: center;
+    
+}
+h2 {
+    margin-bottom: 20px;
+    color: #333;
+}
+
+p {
+    margin-bottom: 15px;
+    color: #666;
+} 
+input[type="text"],
+input[type="password"] {
+    width: 90%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    background-color: #4CAF50;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #45a049;
+}
+
+.right button {
+    background-color: #fff;
+    color: #333;
+}
+
+.right button:hover {
+    background-color: #eee;
+}
+ 
+    </style>
+</head>
+<body>
+    
+    <div class="container">
+        <div class="left">
+        <h2>Login to Your Account</h2>
+        
+        <input type="text" placeholder="Email" required>
+        <input type="password" placeholder="Password" required>
+        
+        <button>Sign In</button>
+    </div>
+    <div class="right">
+        <h2>New Here?</h2>
+        <p>Sign up and discover a great<br> amount of new opportunities!</p>
+        <button>Sign Up</button>
+    </div>  
+</div>
+</body>
+</html>

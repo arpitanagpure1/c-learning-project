@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Login Page</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background-color: #babdce;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 5PX 5PX  5px 5px rgb(247, 5, 255);
+            width: 400px;
+            text-align: center;
+        }
+        .form-group {
+            margin-bottom: 30px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 90%;
+            padding: 15px;
+            border: 2px solid #b42cc0;
+            border-radius: 40px;
+            box-sizing: border-box;
+        }
+
+        input[type="checkbox"] {
+            margin-right: 5px;
+        }
+
+        button {
+            background-color: #c03fda;
+            color: rgb(255, 255, 255);
+            padding: 12px 20px;
+            border: beige;
+            border-radius: 40px;
+            cursor: pointer;
+            width: 50%;
+        }
+
+        button:hover {
+            background-color: #7a14b6;
+            color: #ccc;
+        }
+
+        .links {
+            margin-top: 20px;
+        }
+
+        .links a {
+            color: #c300ff;
+            text-decoration: none;
+        }
+
+        .links a:hover {
+            text-decoration: underline;
+        }        
+    </style>
+</head>
+<body background="https://i.pinimg.com/564x/39/aa/2c/39aa2c93b2269554520ef67d4f012d7b.jpg">
+    
+    <div class="container">
+        <h1>Sign In / Sign Up</h1>
+        <form>
+            <div class="form-group">
+                <label for="email">E-mail</label>
+                <input type="text" id="email" name="email" placeholder="enter your email address">
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="enter correct password">
+            </div>
+
+            <div class="form-group">
+                <input type="checkbox" id="remember" name="remember">
+                <label for="remember">Confirm Credentials</label>
+            </div>
+
+            <button type="submit">Submit</button>
+
+            <div class="links">
+                <a>Don't have an account?</a>
+                <a>Sign up</a>
+            </div>
+        </form>
+    </div>
+</body>
+</html>

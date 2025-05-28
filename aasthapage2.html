@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form Assignment</title>
+    <style>
+        body{
+            background: url('./imageaastha/regis.webp');
+            background-size: cover;
+        }
+        table{
+            border: none;
+            box-shadow: rgba(0, 0, 0, 0.1);
+            padding: 40px;
+            background-image: linear-gradient(rgba(158, 152, 152, 0.6),rgba(105, 103, 103, 0.6)), url(images/blue.jpg);
+            background-size: cover;
+            margin: 20px;
+            border-radius: 15px;
+        }
+        h1{
+            font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif;
+            font-size: 45px;
+        }
+        td{
+            font-size: 20px;
+            font-weight: 500;
+        }
+        input{
+            border-radius: 5px;
+            border: none;
+            padding: 5px;
+            margin: 5px;
+        }
+        select{
+            border-radius: 5px;
+            border: none;
+            padding: 5px;
+            margin: 5px;
+        }
+        textarea{
+            border-radius: 5px;
+            border: none;
+            padding: 5px;
+            margin: 5px;
+        }
+        .hover input{
+            font-size: 17px;
+            padding: 10px;
+        }
+        .hover input:hover{
+            transition: 2ms;
+            font-weight: bold;
+            background-color: skyblue;
+            box-shadow: 1px 1px 1px 1px black;
+        }
+    </style>
+</head>
+<body>
+<center>
+    <form name="registration form">
+        <table>
+            <thead><h1>Registration Form</h1></thead>
+            <tr>
+                <td>Name:</td>
+                <td><input type="text" name="name"/></td>
+            </tr>
+            <tr>
+                <td>Email:</td>
+                <td><input type="email" name="email"/></td>
+            </tr>
+            <tr>
+                <td>Phone:</td>
+                <td><input type="number" name="number"/></td>
+            </tr>
+            <tr>
+                <td>Gender:</td>
+                <td>
+                    <input type="radio" name="gender" value="male"/>Male
+                    <input type="radio" name="gender" value="female"/>Female
+                    <input type="radio" name="gender" value="trans"/>Transgender
+                </td>
+            </tr>
+            <tr>
+                <td>Education:</td>
+                <td>
+                    <select name="education">
+                        <option value="SS">SSC</option>
+                        <option value="HS">HSC</option>
+                        <option value="DI">Diploma</option>
+                        <option value="DE">Degree</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>Documents:</td>
+                <td>
+                    <input type="checkbox" name="ssc"/>SSC Certificate <br>
+                    <input type="checkbox" name="hsc"/>HSC Certificate <br>
+                    <input type="checkbox" name="diploma"/>Diploma <br>
+                    <input type="checkbox" name="degree"/>Degree <br>
+                </td>
+            </tr>
+            <tr>
+                <td>Address:</td>
+                <td><textarea name="address" cols="30" rows="10"></textarea></td>
+            </tr>
+            <tr>
+                <td class="hover" colspan="2" align="center">
+                    <input type="submit" value="Save"/>
+                    <input type="reset" value="Clear"/>
+                </td>
+            </tr>
+        </table>
+    </form>
+</center>
+</body>
+</html>
